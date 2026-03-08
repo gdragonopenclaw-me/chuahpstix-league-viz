@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chuahpstix League Player Viz</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root { --bg:#0b1020; --card:#141b34; --muted:#98a3d6; --text:#e9eeff; --accent:#ff7a59; --ok:#66d9a6; }
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,sans-serif;background:linear-gradient(180deg,#0b1020,#0f1733);color:var(--text)}
+    .wrap{max-width:1050px;margin:0 auto;padding:28px 20px 36px}
+    h1{margin:0 0 8px;font-size:34px} .sub{margin:0 0 24px;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+    .card{background:var(--card);border:1px solid #2a3567;border-radius:16px;padding:16px}
+    .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .stat{background:#101733;border:1px solid #293662;border-radius:12px;padding:12px}
+    .label{color:var(--muted);font-size:13px}
+    .val{font-size:26px;font-weight:700;margin-top:4px}
+    .badge{display:inline-block;background:#2f1b17;color:#ffb39f;border:1px solid #6d3a2d;border-radius:999px;padding:5px 10px;font-size:12px;margin-bottom:10px}
+    .list li{margin:8px 0;color:#d6ddff}
+    a{color:#8bc2ff}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="badge">scouting-style visualization</div>
+    <h1>chuahpstix as a league player</h1>
+    <p class="sub">a playful profile + favorite stats view. built for quick sharing and auto-deploy.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3 style="margin-top:0">player profile radar</h3>
+        <canvas id="radar" height="260"></canvas>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0">favorite stats</h3>
+        <div class="stats">
+          <div class="stat"><div class="label">Carry Agency</div><div class="val">8.5/10</div></div>
+          <div class="stat"><div class="label">Aggression</div><div class="val">8.0/10</div></div>
+          <div class="stat"><div class="label">Chaos Factor</div><div class="val">7.0/10</div></div>
+          <div class="stat"><div class="label">Utility</div><div class="val">4.2/10</div></div>
+        </div>
+        <ul class="list">
+          <li>comfort-driven bruiser energy</li>
+          <li>likes pressure and decisive fights</li>
+          <li>highest upside when dictating tempo</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3 style="margin-top:0">notes</h3>
+      <p class="sub" style="margin:0;color:#c6d0fb">This is a stylized scouting visualization (not official Riot telemetry). You can swap in live API stats later and keep the same charts/UI.</p>
+    </div>
+  </div>
+
+  <script>
+    const radar = document.getElementById('radar');
+    new Chart(radar, {
+      type: 'radar',
+      data: {
+        labels: ['Aggression', 'Utility', 'Discipline', 'Stability', 'Chaos', 'Carry Agency'],
+        datasets: [{
+          label: 'chuahpstix',
+          data: [8, 4.2, 4, 5, 7, 8.5],
+          borderColor: '#ff7a59',
+          backgroundColor: 'rgba(255,122,89,0.2)',
+          pointBackgroundColor: '#ff9f87',
+          pointRadius: 3
+        }]
+      },
+      options: {
+        scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, color: '#93a0d9' }, grid: { color: '#2a3567' }, angleLines: { color: '#2a3567' }, pointLabels: { color: '#dfe5ff' } } },
+        plugins: { legend: { labels: { color: '#e9eeff' } } }
+      }
+    });
+  </script>
+</body>
+</html>
