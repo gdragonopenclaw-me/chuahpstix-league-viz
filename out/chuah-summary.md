@@ -1,12 +1,14 @@
 # Chuah app data refresh
 
-Generated: 2026-03-09T00:12:18.771Z
+Generated: 2026-03-09T00:33:35.599Z
 
 ## League last 10
 - Record: 4-6 (40.0%)
 - Avg KDA ratio: 3.02
 - Avg CS: 53.4
 - Avg KP: 70.6%
+- Teammate leaderboard sample: 80 recent matches
+- Top teammate: xyzipper#NA1 (47 games, 24-23)
 
 ## TFT public sample
 - Requested: 30

@@ -8,6 +8,8 @@ const RIOT_KEY_PATH = path.join(process.env.HOME || '', '.openclaw', 'secrets', 
 
 const LEAGUE_ACCOUNT = { gameName: 'chuahpstix', tagLine: 'NA1' };
 const LEAGUE_COUNT = 10;
+const LEAGUE_TEAMMATE_MATCH_COUNT = 80;
+const LEAGUE_TEAMMATE_TOP = 10;
 const TFT_TARGET_COUNT = 30;
 const TACTICS_TOOLS_URL = 'https://tactics.tools/player/na/chuahpstix/NA1';
 
@@ -64,7 +66,11 @@ function queueName(queueId) {
   return queueLabels[queueId] || `Queue ${queueId}`;
 }
 
-async function riotGet(url, key) {
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function riotGet(url, key, attempt = 0) {
   const response = await fetch(url, {
     headers: {
       'X-Riot-Token': key,
@@ -72,11 +78,24 @@ async function riotGet(url, key) {
     }
   });
 
+  if (response.status === 429 && attempt < 5) {
+    const retryAfterSeconds = Number(response.headers.get('retry-after') || '1');
+    await sleep(Math.max(1, retryAfterSeconds) * 1000);
+    return riotGet(url, key, attempt + 1);
+  }
+
   if (!response.ok) {
     throw new Error(`Riot API ${response.status} for ${url}: ${await response.text()}`);
   }
 
   return response.json();
+}
+
+function participantDisplayName(participant) {
+  if (participant.riotIdGameName && participant.riotIdTagline) {
+    return `${participant.riotIdGameName}#${participant.riotIdTagline}`;
+  }
+  return participant.summonerName || 'Unknown teammate';
 }
 
 async function fetchLeague(key) {
@@ -86,13 +105,15 @@ async function fetchLeague(key) {
   );
 
   const matchIds = await riotGet(
-    `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${account.puuid}/ids?start=0&count=${LEAGUE_COUNT}`,
+    `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${account.puuid}/ids?start=0&count=${LEAGUE_TEAMMATE_MATCH_COUNT}`,
     key
   );
 
   const matches = [];
+  const teammateCounter = new Map();
+  let teammateSampleSize = 0;
 
-  for (const matchId of matchIds) {
+  for (const [index, matchId] of matchIds.entries()) {
     const match = await riotGet(`https://americas.api.riotgames.com/lol/match/v5/matches/${matchId}`, key);
     const me = match.info.participants.find((participant) => participant.puuid === account.puuid);
     if (!me) continue;
@@ -102,24 +123,37 @@ async function fetchLeague(key) {
     const cs = (me.totalMinionsKilled || 0) + (me.neutralMinionsKilled || 0);
     const kp = (me.kills + me.assists) / teamKills;
 
-    matches.push({
-      id: matchId,
-      champion: me.championName,
-      queueId: match.info.queueId,
-      queueName: queueName(match.info.queueId),
-      win: Boolean(me.win),
-      kills: me.kills,
-      deaths: me.deaths,
-      assists: me.assists,
-      kdaRatio: (me.kills + me.assists) / Math.max(1, me.deaths),
-      cs,
-      kp,
-      damage: me.totalDamageDealtToChampions,
-      gold: me.goldEarned,
-      durationSeconds: match.info.gameDuration,
-      endedAt: match.info.gameEndTimestamp,
-      modeTag: match.info.queueId === 450 ? 'aram' : 'rift'
-    });
+    if (index < LEAGUE_COUNT) {
+      matches.push({
+        id: matchId,
+        champion: me.championName,
+        queueId: match.info.queueId,
+        queueName: queueName(match.info.queueId),
+        win: Boolean(me.win),
+        kills: me.kills,
+        deaths: me.deaths,
+        assists: me.assists,
+        kdaRatio: (me.kills + me.assists) / Math.max(1, me.deaths),
+        cs,
+        kp,
+        damage: me.totalDamageDealtToChampions,
+        gold: me.goldEarned,
+        durationSeconds: match.info.gameDuration,
+        endedAt: match.info.gameEndTimestamp,
+        modeTag: match.info.queueId === 450 ? 'aram' : 'rift'
+      });
+    }
+
+    teammateSampleSize += 1;
+    const teammates = team.filter((participant) => participant.puuid !== account.puuid);
+    for (const teammate of teammates) {
+      const name = participantDisplayName(teammate);
+      const row = teammateCounter.get(name) || { name, games: 0, wins: 0, losses: 0 };
+      row.games += 1;
+      if (me.win) row.wins += 1;
+      else row.losses += 1;
+      teammateCounter.set(name, row);
+    }
   }
 
   const wins = matches.filter((match) => match.win).length;
@@ -129,6 +163,16 @@ async function fetchLeague(key) {
     championCounter.set(match.champion, (championCounter.get(match.champion) || 0) + 1);
     queueCounter.set(match.queueName, (queueCounter.get(match.queueName) || 0) + 1);
   }
+
+  const topTeammates = [...teammateCounter.values()]
+    .sort((a, b) => b.games - a.games || b.wins - a.wins || a.name.localeCompare(b.name))
+    .slice(0, LEAGUE_TEAMMATE_TOP)
+    .map((entry) => ({
+      ...entry,
+      record: `${entry.wins}-${entry.losses}`,
+      winRate: entry.wins / Math.max(1, entry.games),
+      winRateText: fmtPct(entry.wins / Math.max(1, entry.games), 0)
+    }));
 
   const avgKda = avg(matches.map((match) => match.kdaRatio));
   const avgCs = avg(matches.map((match) => match.cs));
@@ -150,6 +194,8 @@ async function fetchLeague(key) {
     avgKp,
     topChampions: topEntries(championCounter, 4),
     queueMix: topEntries(queueCounter, 4),
+    teammateSampleSize,
+    topTeammates,
     read,
     matches: matches.map((match) => ({
       ...match,
@@ -304,7 +350,9 @@ async function main() {
       avgCs: Number(league.avgCs.toFixed(1)),
       avgKp: fmtPct(league.avgKp),
       topChampions: league.topChampions,
-      queueMix: league.queueMix
+      queueMix: league.queueMix,
+      teammateSampleSize: league.teammateSampleSize,
+      topTeammates: league.topTeammates
     },
     tft: {
       requestedSampleSize: tft.requestedSampleSize,
@@ -331,6 +379,8 @@ async function main() {
     `- Avg KDA ratio: ${summary.league.avgKdaRatio}`,
     `- Avg CS: ${summary.league.avgCs}`,
     `- Avg KP: ${summary.league.avgKp}`,
+    `- Teammate leaderboard sample: ${summary.league.teammateSampleSize} recent matches`,
+    `- Top teammate: ${summary.league.topTeammates[0] ? `${summary.league.topTeammates[0].name} (${summary.league.topTeammates[0].games} games, ${summary.league.topTeammates[0].record})` : 'n/a'}`,
     '',
     `## TFT public sample`,
     `- Requested: ${summary.tft.requestedSampleSize}`,

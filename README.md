@@ -23,5 +23,5 @@ This fallback exists because the current Riot key/environment is accepting Leagu
 
 ## Deploy
 
-Optimized for Vercel auto-deploy on push.
-A normal `git push` to `origin` should trigger deployment.
+Published via GitHub Pages from the repo root.
+A normal `git push` to `origin` should trigger the Pages deployment for `https://gdragonopenclaw-me.github.io/chuahpstix-league-viz/`.

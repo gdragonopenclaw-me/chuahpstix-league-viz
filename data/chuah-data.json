@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-09T00:12:18.771Z",
+  "generatedAt": "2026-03-09T00:33:35.599Z",
   "profile": {
     "displayName": "chuahpstix",
     "tagline": "NA1"
@@ -40,6 +40,99 @@
       {
         "name": "ARAM",
         "count": 10
+      }
+    ],
+    "teammateSampleSize": 80,
+    "topTeammates": [
+      {
+        "name": "xyzipper#NA1",
+        "games": 47,
+        "wins": 24,
+        "losses": 23,
+        "record": "24-23",
+        "winRate": 0.5106382978723404,
+        "winRateText": "51%"
+      },
+      {
+        "name": "lintaho#NA1",
+        "games": 36,
+        "wins": 18,
+        "losses": 18,
+        "record": "18-18",
+        "winRate": 0.5,
+        "winRateText": "50%"
+      },
+      {
+        "name": "Swolleo#NA1",
+        "games": 35,
+        "wins": 15,
+        "losses": 20,
+        "record": "15-20",
+        "winRate": 0.42857142857142855,
+        "winRateText": "43%"
+      },
+      {
+        "name": "hamturkeygravy#1234",
+        "games": 24,
+        "wins": 11,
+        "losses": 13,
+        "record": "11-13",
+        "winRate": 0.4583333333333333,
+        "winRateText": "46%"
+      },
+      {
+        "name": "pbandjiffy1#NA1",
+        "games": 15,
+        "wins": 7,
+        "losses": 8,
+        "record": "7-8",
+        "winRate": 0.4666666666666667,
+        "winRateText": "47%"
+      },
+      {
+        "name": "jerjerbeans#NA1",
+        "games": 7,
+        "wins": 1,
+        "losses": 6,
+        "record": "1-6",
+        "winRate": 0.14285714285714285,
+        "winRateText": "14%"
+      },
+      {
+        "name": "megusta7#NA1",
+        "games": 5,
+        "wins": 2,
+        "losses": 3,
+        "record": "2-3",
+        "winRate": 0.4,
+        "winRateText": "40%"
+      },
+      {
+        "name": "TrialsOfHel#NA1",
+        "games": 2,
+        "wins": 2,
+        "losses": 0,
+        "record": "2-0",
+        "winRate": 1,
+        "winRateText": "100%"
+      },
+      {
+        "name": "Makoru#NA1",
+        "games": 2,
+        "wins": 1,
+        "losses": 1,
+        "record": "1-1",
+        "winRate": 0.5,
+        "winRateText": "50%"
+      },
+      {
+        "name": "DraconianNEIN#NA1",
+        "games": 2,
+        "wins": 0,
+        "losses": 2,
+        "record": "0-2",
+        "winRate": 0,
+        "winRateText": "0%"
       }
     ],
     "read": "recent games skew heavily toward teamfight involvement. lots of shared kill participation, more brawl anchor than split map grinder.",
