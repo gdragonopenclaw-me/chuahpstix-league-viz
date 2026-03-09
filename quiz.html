@@ -127,6 +127,20 @@
       color: #c8d4ff;
     }
     .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .switch-chip {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font: inherit;
+      cursor: pointer;
+    }
+    .switch-chip.active {
+      border-color: rgba(134, 215, 255, 0.42);
+      background: rgba(134, 215, 255, 0.12);
+    }
     .pill {
       display: inline-flex;
       align-items: center;
@@ -272,6 +286,17 @@
         </div>
       </div>
       <div class="meta-line" id="updated-at">loading latest snapshot…</div>
+    </div>
+
+    <div class="card section">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+        <div>
+          <div class="badge" style="margin-bottom:8px">same allowlist as the dashboard</div>
+          <h2>switch quiz target</h2>
+        </div>
+        <div class="tiny" id="switch-note"></div>
+      </div>
+      <div class="pill-row" id="switch-targets"></div>
     </div>
 
     <div class="grid">
@@ -744,6 +769,27 @@
       return String(value || '').trim().toLowerCase();
     }
 
+    function updateUrl(playerKey) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('player', playerKey);
+      history.replaceState({}, '', url);
+    }
+
+    function renderSwitchTargets(bundle, selectedKey) {
+      byId('switch-note').textContent = bundle.dynamicRules?.explanation || '';
+      byId('switch-targets').innerHTML = (bundle.dynamicTargets || []).map((riotId) => {
+        const key = canonical(riotId);
+        return `<button class="switch-chip ${key === selectedKey ? 'active' : ''}" data-key="${key}">${riotId}</button>`;
+      }).join('');
+      byId('switch-targets').querySelectorAll('.switch-chip').forEach((button) => {
+        button.addEventListener('click', () => {
+          if (button.dataset.key === selectedKey) return;
+          updateUrl(button.dataset.key);
+          window.location.reload();
+        });
+      });
+    }
+
     function selectPlayer(bundle) {
       const params = new URLSearchParams(window.location.search);
       const raw = canonical(params.get('player') || bundle.defaultPlayerKey);
@@ -759,8 +805,10 @@
       quizState.data = data;
       const questionCount = Math.min(10, buildQuestionBank(data).length);
       renderIntro(data, questionCount);
+      renderSwitchTargets(bundle, selected.key);
       byId('updated-at').textContent = `refreshed ${new Date(bundle.generatedAt).toLocaleString()}`;
       byId('quiz-title').textContent = `how well do you know ${selected.profile.riotId}?`;
+      byId('quiz-sub').textContent = `same Riot-backed quiz shell, but now aimed at ${selected.profile.riotId}. champs, duo habits, records, queue patterns, and a few embarrassing specifics.`;
       byId('back-link').href = `./index.html?player=${selected.key}`;
       document.title = `how well do you know ${selected.profile.riotId}?`;
       attachEvents();

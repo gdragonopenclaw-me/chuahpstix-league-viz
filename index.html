@@ -136,6 +136,16 @@
     .fill.bad { background: linear-gradient(90deg, #ffb08c, #ff8693); }
     .read { color: #e7efff; line-height: 1.66; }
     .table { display: flex; flex-direction: column; gap: 10px; }
+    .table-head {
+      display: grid;
+      gap: 10px;
+      padding: 0 12px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .table-head > div { white-space: nowrap; }
     .row {
       display: grid;
       gap: 10px;
@@ -214,7 +224,7 @@
         <h1 id="hero-title">loading player…</h1>
         <p class="sub" id="hero-sub">precomputed multi-player dashboard with a very small explicit switch set, premade synergy splits, champion class reads, an archetype radar, and teammate network mapping.</p>
         <div class="hero-actions" style="margin-top:14px">
-          <a class="hero-link" id="quiz-link" href="./quiz.html">play the friend quiz →</a>
+          <a class="hero-link" id="quiz-link" href="./quiz.html">play this player’s friend quiz →</a>
         </div>
       </div>
       <div class="meta-line" id="updated-at">loading latest refresh…</div>
@@ -318,6 +328,7 @@
           <div>
             <div class="kicker">where identity bends</div>
             <h2>mastery vs results</h2>
+            <p class="small" style="margin-top:6px">Each row shows the champ, its class tag, sample size, mastery, and whether the results are lagging or outrunning comfort.</p>
           </div>
         </div>
         <div class="card soft">
@@ -433,6 +444,15 @@
       `).join('');
     }
 
+    function renderTableHead(container, className, columns) {
+      return `
+        <div class="table-head ${className}" role="row">
+          ${columns.map((column) => `<div role="columnheader">${column}</div>`).join('')}
+        </div>
+        ${container}
+      `;
+    }
+
     function renderBars(container, rows) {
       const max = Math.max(...rows.map((row) => row.count), 1);
       container.innerHTML = rows.map((row) => `
@@ -491,7 +511,7 @@
 
     function renderTeammates(league, rerender) {
       byId('teammate-note').textContent = `clickable targets are limited to the small precomputed allowlist. top 10 from the same ${league.teammateSampleSize}-match fetched window.`;
-      byId('league-teammates').innerHTML = league.topTeammates.map((entry) => `
+      byId('league-teammates').innerHTML = renderTableHead('', 'teammate-row', ['teammate', 'games', 'record', 'win rate']) + league.topTeammates.map((entry) => `
         <div class="row teammate-row">
           <div>
             <strong>${entry.switchable ? `<a class="switch-link" href="?player=${entry.switchTargetKey}" data-switch="${entry.switchTargetKey}">${entry.name}</a>` : entry.name}</strong>
@@ -578,7 +598,7 @@
 
     function renderIdentity(league) {
       byId('mastery-note').textContent = `${league.championIdentity.masterySource}; ${league.championIdentity.masteryCoverage} mastery rows fetched.`;
-      byId('identity-table').innerHTML = league.championIdentity.truePool.map((row) => `
+      byId('identity-table').innerHTML = renderTableHead('', 'identity-row', ['champion', 'games', 'mastery', 'points', 'pool weight']) + league.championIdentity.truePool.map((row) => `
         <div class="row identity-row">
           <div>
             <strong>${row.champion}</strong>
@@ -618,7 +638,7 @@
       if (!rows.length) {
         byId('class-table').innerHTML = '<div class="empty">not enough class-tag data yet.</div>';
       } else {
-        byId('class-table').innerHTML = rows.map((row) => `
+        byId('class-table').innerHTML = renderTableHead('', 'class-row', ['class / subclass', 'games', 'win rate', 'comfort', 'success bar']) + rows.map((row) => `
           <div class="row class-row">
             <div>
               <strong>${row.label}</strong>
@@ -673,7 +693,7 @@
       if (!rows.length) {
         byId('worst-enemies').innerHTML = '<div class="empty">not enough repeat enemy data yet.</div>';
       } else {
-        byId('worst-enemies').innerHTML = rows.map((row) => `
+        byId('worst-enemies').innerHTML = renderTableHead('', 'enemy-row', ['enemy champ', 'losses', 'loss rate', 'avg KDA', 'note']) + rows.map((row) => `
           <div class="row enemy-row">
             <div>
               <strong>${row.champion}</strong>
@@ -690,7 +710,7 @@
     }
 
     function renderRecords(league) {
-      byId('records').innerHTML = league.records.rows.map((row) => `
+      byId('records').innerHTML = renderTableHead('', 'record-row', ['record', 'date']) + league.records.rows.map((row) => `
         <div class="row record-row">
           <div>
             <strong>${row.label}: ${row.value}</strong>
@@ -738,6 +758,7 @@
       byId('hero-title').textContent = `${player.profile.riotId}: league identity rebuild`;
       byId('updated-at').textContent = `refreshed ${new Date(data.generatedAt).toLocaleString()}`;
       byId('quiz-link').href = `./quiz.html?player=${selectedKey}`;
+      byId('quiz-link').textContent = `play ${player.profile.riotId}’s friend quiz →`;
       renderRecent(league);
       renderTeammates(league, (key) => renderPlayer(data, key));
       renderRadar(league);
