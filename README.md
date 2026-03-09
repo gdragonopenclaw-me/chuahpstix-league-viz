@@ -4,6 +4,13 @@ Static web app for **chuahpstix** with a deeper Riot-backed League page plus a s
 
 ## What it shows now
 
+### Shareable quiz
+
+- `quiz.html` turns the same generated dashboard data into a playful multiple-choice friend quiz
+- randomized question selection from actual stats: champ identity, teammates, queue habits, playtime, records, and signature signals
+- end-of-quiz score + answer review for easy public sharing
+
+
 ### League
 
 - full currently fetchable Riot-visible match-v5 history window, paginated in 100-match chunks

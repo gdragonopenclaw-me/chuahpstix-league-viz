@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>how well do you know chuahpstix?</title>
+  <style>
+    :root {
+      --bg: #07101d;
+      --bg2: #111c3f;
+      --card: rgba(17, 27, 58, 0.9);
+      --card-soft: rgba(12, 18, 42, 0.88);
+      --border: rgba(155, 187, 255, 0.18);
+      --text: #f0f4ff;
+      --muted: #9db0e6;
+      --accent: #86d7ff;
+      --accent2: #ffb08c;
+      --good: #7ce0ab;
+      --bad: #ff9fa8;
+      --pill: rgba(255,255,255,0.06);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: Inter, system-ui, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(134, 215, 255, 0.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(255, 176, 140, 0.12), transparent 24%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      min-height: 100vh;
+    }
+    a { color: #c9e5ff; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 28px 18px 52px; }
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(134, 215, 255, 0.1);
+      border: 1px solid rgba(134, 215, 255, 0.22);
+      color: #d7ecff;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    h1 { margin: 0 0 8px; font-size: 40px; line-height: 1.05; }
+    h2 { margin: 0; font-size: 24px; }
+    h3 { margin: 0 0 10px; font-size: 18px; }
+    p { margin: 0; }
+    .sub { color: var(--muted); line-height: 1.65; max-width: 720px; }
+    .meta-line { color: #cad6ff; font-size: 14px; }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .button, button {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: linear-gradient(135deg, rgba(134, 215, 255, 0.18), rgba(255, 176, 140, 0.16));
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 14px;
+      font: inherit;
+      cursor: pointer;
+      transition: transform .14s ease, border-color .14s ease, background .14s ease;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .button:hover, button:hover { transform: translateY(-1px); border-color: rgba(255,255,255,0.22); }
+    button.secondary, .button.secondary {
+      background: rgba(255,255,255,0.03);
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 16px 38px rgba(0,0,0,0.24);
+      backdrop-filter: blur(8px);
+    }
+    .card.soft {
+      background: var(--card-soft);
+    }
+    .section { margin-top: 18px; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .stat {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+    .stat .label {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .stat .value {
+      margin-top: 8px;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .stat .hint {
+      margin-top: 6px;
+      font-size: 13px;
+      color: #c8d4ff;
+    }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      background: var(--pill);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+    .tiny { font-size: 13px; color: var(--muted); }
+    .progress-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .progress {
+      height: 12px;
+      flex: 1;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+    .progress > div {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 999px;
+      transition: width .2s ease;
+    }
+    .question-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 12px;
+      color: #d7e5ff;
+      margin-bottom: 14px;
+    }
+    .question-title {
+      font-size: 28px;
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+    .answers {
+      display: grid;
+      gap: 12px;
+    }
+    .answer {
+      text-align: left;
+      padding: 15px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text);
+      font: inherit;
+      cursor: pointer;
+    }
+    .answer:hover { border-color: rgba(134, 215, 255, 0.35); }
+    .answer.correct {
+      border-color: rgba(124, 224, 171, 0.5);
+      background: rgba(124, 224, 171, 0.12);
+    }
+    .answer.wrong {
+      border-color: rgba(255, 159, 168, 0.5);
+      background: rgba(255, 159, 168, 0.12);
+    }
+    .answer.dim { opacity: 0.65; }
+    .feedback {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      line-height: 1.6;
+    }
+    .feedback.good { border-color: rgba(124, 224, 171, 0.28); }
+    .feedback.bad { border-color: rgba(255, 159, 168, 0.28); }
+    .result-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .score-ring {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: conic-gradient(var(--accent) var(--score-angle, 0deg), rgba(255,255,255,0.08) 0deg);
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .score-ring-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #0b1530;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-weight: 700;
+    }
+    .review-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .review-item {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .review-item.good { border-color: rgba(124, 224, 171, 0.26); }
+    .review-item.bad { border-color: rgba(255, 159, 168, 0.26); }
+    .review-meta { color: var(--muted); font-size: 13px; margin-top: 6px; }
+    .hidden { display: none !important; }
+    .empty { color: var(--muted); font-size: 14px; }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      h1 { font-size: 32px; }
+      .question-title { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <div class="badge">friend test mode • data-fed multiple choice quiz</div>
+        <h1>how well do you know chuahpstix?</h1>
+        <p class="sub">a little scouting report, a little loyalty test. this quiz pulls from the same Riot-backed dashboard data and turns it into a playful read on champs, habits, teammates, weird records, and late-night queue behavior.</p>
+        <div class="actions">
+          <button id="start-button">start quiz</button>
+          <button class="secondary hidden" id="restart-button">reroll questions</button>
+          <a class="button secondary" href="./index.html">back to dashboard</a>
+        </div>
+      </div>
+      <div class="meta-line" id="updated-at">loading latest snapshot…</div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div id="intro-panel">
+          <h2>what you’re walking into</h2>
+          <div class="stats" id="intro-stats"></div>
+          <div class="section">
+            <h3>question pool</h3>
+            <div class="pill-row" id="topic-pills"></div>
+          </div>
+          <div class="section tiny" id="intro-copy">loading quiz notes…</div>
+        </div>
+
+        <div id="quiz-panel" class="hidden">
+          <div class="progress-wrap">
+            <div class="progress"><div id="progress-fill"></div></div>
+            <div class="tiny" id="progress-text"></div>
+          </div>
+          <div class="question-kicker" id="question-kicker"></div>
+          <div class="question-title" id="question-title"></div>
+          <div class="answers" id="answers"></div>
+          <div class="feedback hidden" id="feedback"></div>
+          <div class="actions hidden" id="next-wrap">
+            <button id="next-button">next question</button>
+          </div>
+        </div>
+
+        <div id="result-panel" class="hidden">
+          <div class="result-head">
+            <div>
+              <div class="badge" id="result-badge">quiz complete</div>
+              <h2 id="result-title">calculating your scout rank…</h2>
+              <p class="sub" id="result-copy"></p>
+            </div>
+            <div>
+              <div class="score-ring" id="score-ring">
+                <div class="score-ring-inner" id="score-ring-inner"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card soft">
+            <h3>answer review</h3>
+            <div class="review-list" id="review-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card soft">
+        <h3>what this quiz pulls from</h3>
+        <p class="sub" id="sidebar-copy">loading source notes…</p>
+        <div class="section">
+          <h3>fast facts</h3>
+          <div class="pill-row" id="sidebar-facts"></div>
+        </div>
+        <div class="section">
+          <h3>share note</h3>
+          <p class="tiny">this is a plain public page on the same site, so Anson can just send the link and let people embarrass themselves in real time lol.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const byId = (id) => document.getElementById(id);
+    const fmtPct = (value, digits = 1) => `${(value * 100).toFixed(digits)}%`;
+    const shuffle = (items) => {
+      const copy = [...items];
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    };
+    const unique = (items) => [...new Set(items.filter(Boolean))];
+    const num = (value, digits = 0) => Number(value).toFixed(digits);
+
+    let quizState = {
+      data: null,
+      questions: [],
+      index: 0,
+      score: 0,
+      answers: [],
+      answered: false
+    };
+
+    function takeDistractors(pool, correct, count = 3) {
+      return shuffle(unique(pool).filter((item) => item !== correct)).slice(0, count);
+    }
+
+    function pushQuestion(bank, question) {
+      if (!question || !question.correctAnswer || !question.options || question.options.length < 4) return;
+      bank.push({
+        ...question,
+        options: shuffle(question.options.slice(0, 4))
+      });
+    }
+
+    function buildQuestionBank(data) {
+      const league = data.league;
+      const topChampions = league.topChampions || [];
+      const teammateRows = league.topTeammates || [];
+      const records = league.records?.rows || [];
+      const truePool = league.championIdentity?.truePool || [];
+      const lowFam = league.championIdentity?.lowFamiliarityStrongResults || [];
+      const signature = league.signaturePlay?.signals || [];
+      const playtimeBands = league.playtimePersonality?.bands || [];
+      const worstEnemies = league.worstEnemy?.rows || [];
+      const queueMix = league.queueMix || [];
+      const allPoolChamps = unique([
+        ...topChampions.map((row) => row.name),
+        ...truePool.map((row) => row.champion),
+        ...lowFam.map((row) => row.champion),
+        ...records.map((row) => row.champion),
+        ...league.matches.map((row) => row.champion),
+        ...worstEnemies.map((row) => row.champion)
+      ]);
+      const teammateNames = unique(teammateRows.map((row) => row.name));
+      const queueNames = unique(queueMix.map((row) => row.name));
+      const recordLabels = new Map(records.map((row) => [row.label, row]));
+      const bank = [];
+
+      if (topChampions[0]) {
+        pushQuestion(bank, {
+          category: 'champ identity',
+          prompt: 'which champion shows up the most in chuah’s deep sample?',
+          correctAnswer: topChampions[0].name,
+          options: [topChampions[0].name, ...takeDistractors(allPoolChamps, topChampions[0].name)],
+          explain: `${topChampions[0].name} leads the sample at ${topChampions[0].count} games. that’s the clearest “yeah ok this is part of the identity” answer.`
+        });
+      }
+
+      const bestTruePool = [...truePool].filter((row) => row.games >= 5).sort((a, b) => b.winRate - a.winRate)[0];
+      if (bestTruePool) {
+        pushQuestion(bank, {
+          category: 'champ identity',
+          prompt: 'inside the main true-pool champs, which pick has the nastiest win rate?',
+          correctAnswer: bestTruePool.champion,
+          options: [bestTruePool.champion, ...takeDistractors(truePool.map((row) => row.champion), bestTruePool.champion)],
+          explain: `${bestTruePool.champion} is sitting at ${bestTruePool.record}, which is ${bestTruePool.winRateText}. quietly gross.`
+        });
+      }
+
+      const topMastery = [...truePool].sort((a, b) => b.masteryPoints - a.masteryPoints)[0];
+      if (topMastery) {
+        pushQuestion(bank, {
+          category: 'true pool',
+          prompt: 'which champ has the biggest mastery-point mountain in the quiz data?',
+          correctAnswer: topMastery.champion,
+          options: [topMastery.champion, ...takeDistractors(truePool.map((row) => row.champion), topMastery.champion)],
+          explain: `${topMastery.champion} is the mastery king here with ${topMastery.masteryPoints.toLocaleString()} points.`
+        });
+      }
+
+      const undefeatedPocket = [...lowFam].sort((a, b) => b.games - a.games)[0];
+      if (undefeatedPocket) {
+        pushQuestion(bank, {
+          category: 'pocket pick',
+          prompt: 'which lower-familiarity champ still went completely undefeated in this sample?',
+          correctAnswer: undefeatedPocket.champion,
+          options: [undefeatedPocket.champion, ...takeDistractors(allPoolChamps, undefeatedPocket.champion)],
+          explain: `${undefeatedPocket.champion} is one of the “why does this keep working” picks at ${undefeatedPocket.record}.`
+        });
+      }
+
+      if (teammateRows[0]) {
+        pushQuestion(bank, {
+          category: 'teammates',
+          prompt: 'who is chuah’s most-played duo by a mile?',
+          correctAnswer: teammateRows[0].name,
+          options: [teammateRows[0].name, ...takeDistractors(teammateNames, teammateRows[0].name)],
+          explain: `${teammateRows[0].name} shows up in ${teammateRows[0].games} games with a ${teammateRows[0].record} record together.`
+        });
+      }
+
+      const bestTeammate = [...teammateRows].filter((row) => row.games >= 5).sort((a, b) => b.winRate - a.winRate)[0];
+      if (bestTeammate) {
+        pushQuestion(bank, {
+          category: 'teammates',
+          prompt: 'among the listed repeat teammates, who has the best win rate with chuah?',
+          correctAnswer: bestTeammate.name,
+          options: [bestTeammate.name, ...takeDistractors(teammateNames, bestTeammate.name)],
+          explain: `${bestTeammate.name} edges the board with ${bestTeammate.winRateText} across ${bestTeammate.games} games together.`
+        });
+      }
+
+      const mainQueue = queueMix[0];
+      if (mainQueue) {
+        pushQuestion(bank, {
+          category: 'queue habits',
+          prompt: 'what queue basically defines this whole sample?',
+          correctAnswer: mainQueue.name,
+          options: [mainQueue.name, ...takeDistractors(queueNames, mainQueue.name)],
+          explain: `${mainQueue.name} is the main character here at ${mainQueue.count} of ${league.deepSampleSize} matches.`
+        });
+      }
+
+      const secondQueue = queueMix[1];
+      if (secondQueue) {
+        pushQuestion(bank, {
+          category: 'queue habits',
+          prompt: 'after ARAM, what is the next biggest queue slice?',
+          correctAnswer: secondQueue.name,
+          options: [secondQueue.name, ...takeDistractors(queueNames, secondQueue.name)],
+          explain: `${secondQueue.name} is the runner-up queue with ${secondQueue.count} games.`
+        });
+      }
+
+      const bestBand = league.playtimePersonality?.bestBand;
+      const worstBand = league.playtimePersonality?.worstBand;
+      if (bestBand) {
+        pushQuestion(bank, {
+          category: 'playtime personality',
+          prompt: 'when does the data say chuah performs best?',
+          correctAnswer: bestBand,
+          options: [bestBand, ...takeDistractors(playtimeBands.map((row) => row.label), bestBand)],
+          explain: `${bestBand} was the cleanest band in this window. the page literally calls it the best-performing time slot.`
+        });
+      }
+      if (worstBand) {
+        pushQuestion(bank, {
+          category: 'playtime personality',
+          prompt: 'which time band looks the shakiest?',
+          correctAnswer: worstBand,
+          options: [worstBand, ...takeDistractors(playtimeBands.map((row) => row.label), worstBand)],
+          explain: `${worstBand} came out as the weakest band in the split read.`
+        });
+      }
+
+      const topSignal = signature[0];
+      if (topSignal) {
+        pushQuestion(bank, {
+          category: 'playstyle',
+          prompt: 'which signature play callout ranks highest on the dashboard right now?',
+          correctAnswer: topSignal.label,
+          options: [topSignal.label, ...takeDistractors(signature.map((row) => row.label), topSignal.label)],
+          explain: `${topSignal.label} is the strongest surfaced signal right now at ${topSignal.avgPercentileText}.`
+        });
+      }
+
+      const stealsSignal = signature.find((row) => row.key === 'steals');
+      if (stealsSignal) {
+        pushQuestion(bank, {
+          category: 'playstyle',
+          prompt: 'which weird little gremlin trait got its own callout because the sample had actual events?',
+          correctAnswer: stealsSignal.label,
+          options: [stealsSignal.label, ...takeDistractors(signature.map((row) => row.label), stealsSignal.label)],
+          explain: `${stealsSignal.avgValueText}. enough theft energy to earn a special mention lol.`
+        });
+      }
+
+      const highestKills = recordLabels.get('highest kills');
+      if (highestKills) {
+        pushQuestion(bank, {
+          category: 'records',
+          prompt: 'which champion owns chuah’s highest-kills game in this fetched window?',
+          correctAnswer: highestKills.champion,
+          options: [highestKills.champion, ...takeDistractors(allPoolChamps, highestKills.champion)],
+          explain: `${highestKills.champion} holds the top frag game: ${highestKills.kdaText} for ${highestKills.value} kills.`
+        });
+      }
+
+      const highestAssists = recordLabels.get('highest assists');
+      if (highestAssists) {
+        pushQuestion(bank, {
+          category: 'records',
+          prompt: 'which champion delivered the absurd 64-assist game?',
+          correctAnswer: highestAssists.champion,
+          options: [highestAssists.champion, ...takeDistractors(allPoolChamps, highestAssists.champion)],
+          explain: `${highestAssists.champion} posted the 64-assist game. absolutely shameless enabler behavior.`
+        });
+      }
+
+      const highestDamage = recordLabels.get('highest damage');
+      if (highestDamage) {
+        pushQuestion(bank, {
+          category: 'records',
+          prompt: 'which champion owns the highest damage game on the board?',
+          correctAnswer: highestDamage.champion,
+          options: [highestDamage.champion, ...takeDistractors(allPoolChamps, highestDamage.champion)],
+          explain: `${highestDamage.champion} owns the damage spike with ${Number(highestDamage.value).toLocaleString()} damage in ${highestDamage.queueName}.`
+        });
+      }
+
+      const highestCs = recordLabels.get('highest CS');
+      if (highestCs) {
+        pushQuestion(bank, {
+          category: 'records',
+          prompt: 'which champ farmed the highest CS total in the sample?',
+          correctAnswer: highestCs.champion,
+          options: [highestCs.champion, ...takeDistractors(allPoolChamps, highestCs.champion)],
+          explain: `${highestCs.champion} owns the ${highestCs.value} CS spike. somebody locked in for once.`
+        });
+      }
+
+      if (worstEnemies[0]) {
+        pushQuestion(bank, {
+          category: 'nemesis',
+          prompt: 'according to the correlation read, which enemy champ is the current top “ugh not this again” pick?',
+          correctAnswer: worstEnemies[0].champion,
+          options: [worstEnemies[0].champion, ...takeDistractors(worstEnemies.map((row) => row.champion), worstEnemies[0].champion)],
+          explain: `${worstEnemies[0].champion} tops the rough-enemy table with a ${worstEnemies[0].lossRateText} loss rate across ${worstEnemies[0].games} games.`
+        });
+      }
+
+      const exactCountChoices = [league.deepSampleSize, league.deepSampleSize - 40, league.deepSampleSize + 32, 128]
+        .filter((value, index, arr) => value > 0 && arr.indexOf(value) === index)
+        .map(String);
+      if (exactCountChoices.length >= 4) {
+        pushQuestion(bank, {
+          category: 'sample size',
+          prompt: 'roughly how big is the current Riot-visible League sample behind this page?',
+          correctAnswer: String(league.deepSampleSize),
+          options: exactCountChoices,
+          explain: `the current fetched window is ${league.deepSampleSize} matches deep, which is beefy enough to ask annoying friend-quiz questions like this.`
+        });
+      }
+
+      return shuffle(bank);
+    }
+
+    function renderIntro(data, questionCount) {
+      const league = data.league;
+      byId('intro-stats').innerHTML = [
+        { label: 'quiz length', value: questionCount, hint: 'randomized from the full question pool' },
+        { label: 'deep sample', value: league.deepSampleSize, hint: `${league.overall.record} overall` },
+        { label: 'main queue', value: league.queueMix[0]?.name || 'n/a', hint: `${league.queueMix[0]?.count || 0} matches` }
+      ].map((stat) => `
+        <div class="stat">
+          <div class="label">${stat.label}</div>
+          <div class="value">${stat.value}</div>
+          <div class="hint">${stat.hint}</div>
+        </div>
+      `).join('');
+
+      byId('topic-pills').innerHTML = [
+        'champ identity',
+        'signature play',
+        'teammates',
+        'queue habits',
+        'records',
+        'playtime personality'
+      ].map((topic) => `<div class="pill">${topic}</div>`).join('');
+
+      byId('intro-copy').textContent = `question bank is built live from the same dataset as the dashboard, so if the source stats change, the quiz changes too. no stale trivia cards pretending to be data science.`;
+      byId('sidebar-copy').textContent = `source window: ${league.historyWindow.firstMatchAtText} to ${league.historyWindow.lastMatchAtText}. the quiz pulls from champion pool, queue mix, teammate pairings, signature signals, worst-enemy reads, and personal records.`;
+      byId('sidebar-facts').innerHTML = [
+        `${league.queueMix[0]?.name || 'n/a'} main`,
+        `${league.topChampions[0]?.name || 'n/a'} top champ`,
+        `${league.topTeammates[0]?.name || 'n/a'} top duo`,
+        `${league.playtimePersonality?.bestBand || 'n/a'} best time`,
+        `${league.signaturePlay?.signals?.[0]?.label || 'n/a'} top signal`
+      ].map((fact) => `<div class="pill">${fact}</div>`).join('');
+    }
+
+    function startQuiz() {
+      const bank = buildQuestionBank(quizState.data);
+      const selected = bank.slice(0, Math.min(10, bank.length));
+      quizState.questions = selected;
+      quizState.index = 0;
+      quizState.score = 0;
+      quizState.answers = [];
+      quizState.answered = false;
+      byId('intro-panel').classList.add('hidden');
+      byId('result-panel').classList.add('hidden');
+      byId('quiz-panel').classList.remove('hidden');
+      byId('restart-button').classList.remove('hidden');
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const question = quizState.questions[quizState.index];
+      const progress = ((quizState.index) / quizState.questions.length) * 100;
+      byId('progress-fill').style.width = `${progress}%`;
+      byId('progress-text').textContent = `question ${quizState.index + 1} of ${quizState.questions.length}`;
+      byId('question-kicker').textContent = question.category;
+      byId('question-title').textContent = question.prompt;
+      byId('feedback').className = 'feedback hidden';
+      byId('feedback').innerHTML = '';
+      byId('next-wrap').classList.add('hidden');
+      quizState.answered = false;
+
+      byId('answers').innerHTML = question.options.map((option) => `
+        <button class="answer" data-option="${String(option).replace(/"/g, '&quot;')}">${option}</button>
+      `).join('');
+
+      byId('answers').querySelectorAll('.answer').forEach((button) => {
+        button.addEventListener('click', () => handleAnswer(button.dataset.option));
+      });
+    }
+
+    function handleAnswer(selected) {
+      if (quizState.answered) return;
+      quizState.answered = true;
+      const question = quizState.questions[quizState.index];
+      const correct = selected === question.correctAnswer;
+      if (correct) quizState.score += 1;
+      quizState.answers.push({
+        ...question,
+        selected,
+        correct
+      });
+
+      byId('answers').querySelectorAll('.answer').forEach((button) => {
+        const option = button.dataset.option;
+        button.disabled = true;
+        if (option === question.correctAnswer) button.classList.add('correct');
+        else if (option === selected) button.classList.add('wrong');
+        else button.classList.add('dim');
+      });
+
+      const feedback = byId('feedback');
+      feedback.className = `feedback ${correct ? 'good' : 'bad'}`;
+      feedback.innerHTML = `<strong>${correct ? 'correct lol' : 'nope lol'}</strong><div style="margin-top:6px">${question.explain}</div>`;
+      byId('next-wrap').classList.remove('hidden');
+      byId('next-button').textContent = quizState.index === quizState.questions.length - 1 ? 'see results' : 'next question';
+    }
+
+    function finishQuiz() {
+      byId('quiz-panel').classList.add('hidden');
+      byId('result-panel').classList.remove('hidden');
+      const total = quizState.questions.length;
+      const pct = total ? quizState.score / total : 0;
+      const angle = `${pct * 360}deg`;
+      byId('score-ring').style.setProperty('--score-angle', angle);
+      byId('score-ring-inner').innerHTML = `<div><div style="font-size:28px">${quizState.score}/${total}</div><div class="tiny">${Math.round(pct * 100)}%</div></div>`;
+
+      let tier = 'polite acquaintance';
+      let copy = 'you know the headlines, but you are still a little too vulnerable to fake confident guesses.';
+      if (pct >= 0.9) {
+        tier = 'inner-circle queue gremlin';
+        copy = 'disgusting performance. you either actually pay attention, or you have been trapped in too many calls where champion reroll discourse happened in real time.';
+      } else if (pct >= 0.7) {
+        tier = 'real one';
+        copy = 'solid read. you know the champs, the duo lore, and the shape of the stats. nobody can call you a fake friend today.';
+      } else if (pct >= 0.5) {
+        tier = 'casual observer';
+        copy = 'you’ve seen enough to talk your way through it, but not enough to avoid a few embarrassing misses.';
+      }
+
+      byId('result-badge').textContent = tier;
+      byId('result-title').textContent = `final grade: ${tier}`;
+      byId('result-copy').textContent = copy;
+      byId('progress-fill').style.width = '100%';
+
+      byId('review-list').innerHTML = quizState.answers.map((answer, idx) => `
+        <div class="review-item ${answer.correct ? 'good' : 'bad'}">
+          <strong>${idx + 1}. ${answer.prompt}</strong>
+          <div class="review-meta">your answer: ${answer.selected} ${answer.correct ? '• correct' : '• not it'} </div>
+          ${answer.correct ? '' : `<div class="review-meta">correct answer: ${answer.correctAnswer}</div>`}
+          <div class="review-meta">${answer.explain}</div>
+        </div>
+      `).join('');
+    }
+
+    function attachEvents() {
+      byId('start-button').addEventListener('click', startQuiz);
+      byId('restart-button').addEventListener('click', startQuiz);
+      byId('next-button').addEventListener('click', () => {
+        if (quizState.index >= quizState.questions.length - 1) finishQuiz();
+        else {
+          quizState.index += 1;
+          renderQuestion();
+        }
+      });
+    }
+
+    async function boot() {
+      const response = await fetch('./data/chuah-data.json', { cache: 'no-store' });
+      const data = await response.json();
+      quizState.data = data;
+      const questionCount = Math.min(10, buildQuestionBank(data).length);
+      renderIntro(data, questionCount);
+      byId('updated-at').textContent = `refreshed ${new Date(data.generatedAt).toLocaleString()}`;
+      attachEvents();
+    }
+
+    boot().catch((error) => {
+      console.error(error);
+      byId('updated-at').textContent = 'could not load quiz data';
+      byId('intro-copy').textContent = 'the page could not load the shared data file, so the quiz bank never spawned.';
+      byId('sidebar-copy').textContent = 'check the data path or static hosting setup.';
+    });
+  </script>
+</body>
+</html>
