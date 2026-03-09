@@ -1,0 +1,91 @@
+{
+  "generatedAt": "2026-03-09T00:12:18.771Z",
+  "league": {
+    "sampleSize": 10,
+    "record": "4-6",
+    "winRate": "40.0%",
+    "avgKdaRatio": 3.02,
+    "avgCs": 53.4,
+    "avgKp": "70.6%",
+    "topChampions": [
+      {
+        "name": "Jayce",
+        "count": 2
+      },
+      {
+        "name": "Renekton",
+        "count": 2
+      },
+      {
+        "name": "Aurora",
+        "count": 1
+      },
+      {
+        "name": "Irelia",
+        "count": 1
+      }
+    ],
+    "queueMix": [
+      {
+        "name": "ARAM",
+        "count": 10
+      }
+    ]
+  },
+  "tft": {
+    "requestedSampleSize": 30,
+    "availableSampleSize": 18,
+    "avgPlacement": 3.5,
+    "top4Rate": "72.2%",
+    "winRate": "50.0%",
+    "mostFrequentQueue": {
+      "name": "Double Up",
+      "count": 18
+    },
+    "topChampions": [
+      {
+        "name": "Fiddlesticks",
+        "count": 9
+      },
+      {
+        "name": "Swain",
+        "count": 9
+      },
+      {
+        "name": "Azir",
+        "count": 8
+      },
+      {
+        "name": "Shyvana",
+        "count": 7
+      },
+      {
+        "name": "Ashe",
+        "count": 6
+      },
+      {
+        "name": "Kindred",
+        "count": 6
+      }
+    ],
+    "topComps": [
+      {
+        "name": "Azir / Fiddlesticks / Kindred",
+        "count": 3
+      },
+      {
+        "name": "Azir / Fiddlesticks / Shyvana",
+        "count": 3
+      },
+      {
+        "name": "Azir / Fiddlesticks / Swain",
+        "count": 3
+      },
+      {
+        "name": "Azir / Shyvana / Swain",
+        "count": 3
+      }
+    ],
+    "playstyleRead": "Usually caps boards pretty high, and tends to survive deep into lobbies."
+  }
+}

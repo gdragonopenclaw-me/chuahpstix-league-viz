@@ -1,0 +1,2187 @@
+{
+  "generatedAt": "2026-03-09T00:12:18.771Z",
+  "profile": {
+    "displayName": "chuahpstix",
+    "tagline": "NA1"
+  },
+  "league": {
+    "account": {
+      "puuid": "5FbDO9ChcvQSkPhAiskEgPDJTvCDcl-IrJvlfq9Ci1O-LKZsQR1zthmB7VzZDlVTGkD6XpGevS9n9g",
+      "gameName": "chuahpstix",
+      "tagLine": "NA1"
+    },
+    "sampleSize": 10,
+    "wins": 4,
+    "losses": 6,
+    "record": "4-6",
+    "winRate": 0.4,
+    "avgKdaRatio": 3.017604903266668,
+    "avgCs": 53.4,
+    "avgKp": 0.7061764293210917,
+    "topChampions": [
+      {
+        "name": "Jayce",
+        "count": 2
+      },
+      {
+        "name": "Renekton",
+        "count": 2
+      },
+      {
+        "name": "Aurora",
+        "count": 1
+      },
+      {
+        "name": "Irelia",
+        "count": 1
+      }
+    ],
+    "queueMix": [
+      {
+        "name": "ARAM",
+        "count": 10
+      }
+    ],
+    "read": "recent games skew heavily toward teamfight involvement. lots of shared kill participation, more brawl anchor than split map grinder.",
+    "matches": [
+      {
+        "id": "NA1_5501011789",
+        "champion": "Senna",
+        "queueId": 450,
+        "queueName": "ARAM",
+        "win": false,
+        "kills": 11,
+        "deaths": 9,
+        "assists": 28,
+        "kdaRatio": 4.333333333333333,
+        "cs": 50,
+        "kp": 0.7358490566037735,
+        "damage": 22652,
+        "gold": 13872,
+        "durationSeconds": 1162,
+        "endedAt": 1772082849187,
+        "modeTag": "aram",
+        "kpPct": "73.6%",
+        "kdaText": "11/9/28"
+      },
+      {
+        "id": "NA1_5498847289",
+        "champion": "Khazix",
+        "queueId": 450,
+        "queueName": "ARAM",
+        "win": false,
+        "kills": 17,
+        "deaths": 12,
+        "assists": 10,
+        "kdaRatio": 2.25,
+        "cs": 23,
+        "kp": 0.5869565217391305,
+        "damage": 29228,
+        "gold": 15743,
+        "durationSeconds": 1316,
+        "endedAt": 1771824984938,
+        "modeTag": "aram",
+        "kpPct": "58.7%",
+        "kdaText": "17/12/10"
+      },
+      {
+        "id": "NA1_5498819334",
+        "champion": "Renekton",
+        "queueId": 450,
+        "queueName": "ARAM",
+        "win": false,
+        "kills": 14,
+        "deaths": 16,
+        "assists": 17,
+        "kdaRatio": 1.9375,
+        "cs": 53,
+        "kp": 0.5849056603773585,
+        "damage": 41436,
+        "gold": 16963,
+        "durationSeconds": 1560,
+        "endedAt": 1771823492317,
+        "modeTag": "aram",
+        "kpPct": "58.5%",
+        "kdaText": "14/16/17"
+      },
+      {
+        "id": "NA1_5497860369",
+        "champion": "Renekton",
+        "queueId": 450,
+        "queueName": "ARAM",
+        "win": true,
+        "kills": 6,
+        "deaths": 14,
+        "assists": 28,
+        "kdaRatio": 2.4285714285714284,
+        "cs": 41,
+        "kp": 0.6938775510204082,
+        "damage": 31241,
+        "gold": 13761,
+        "durationSeconds": 1286,
+        "endedAt": 1771735226706,
+        "modeTag": "aram",
+        "kpPct": "69.4%",
+        "kdaText": "6/14/28"
+      },
+      {
+        "id": "NA1_5496997903",
+        "champion": "Irelia",
+        "queueId": 450,
+        "queueName": "ARAM",
+        "win": false,
+        "kills": 22,
+        "deaths": 17,
+        "assists": 36,
+        "kdaRatio": 3.411764705882353,
+        "cs": 132,
+        "kp": 0.7733333333333333,
+        "damage": 72432,
+        "gold": 22738,
+        "durationSeconds": 1760,
+        "endedAt": 1771649835388,
+        "modeTag": "aram",
+        "kpPct": "77.3%",
+        "kdaText": "22/17/36"
+      },
+      {
+        "id": "NA1_5496972617",
+        "champion": "Rengar",
+        "queueId": 450,
+        "queueName": "ARAM",
+        "win": false,
+        "kills": 13,
+        "deaths": 13,
+        "assists": 8,
+        "kdaRatio": 1.6153846153846154,
+        "cs": 13,
+        "kp": 0.84,
+        "damage": 26283,
+        "gold": 12088,
+        "durationSeconds": 967,
+        "endedAt": 1771647898580,
+        "modeTag": "aram",
+        "kpPct": "84.0%",
+        "kdaText": "13/13/8"
+      },
+      {
+        "id": "NA1_5496944627",
+        "champion": "Aurora",
+        "queueId": 450,
+        "queueName": "ARAM",
+        "win": false,
+        "kills": 8,
+        "deaths": 12,
+        "assists": 23,
+        "kdaRatio": 2.5833333333333335,
+        "cs": 21,
+        "kp": 0.6078431372549019,
+        "damage": 27035,
+        "gold": 12677,
+        "durationSeconds": 1200,
+        "endedAt": 1771646717862,
+        "modeTag": "aram",
+        "kpPct": "60.8%",
+        "kdaText": "8/12/23"
+      },
+      {
+        "id": "NA1_5496923297",
+        "champion": "Jayce",
+        "queueId": 450,
+        "queueName": "ARAM",
+        "win": true,
+        "kills": 22,
+        "deaths": 11,
+        "assists": 30,
+        "kdaRatio": 4.7272727272727275,
+        "cs": 49,
+        "kp": 0.8125,
+        "damage": 51824,
+        "gold": 16042,
+        "durationSeconds": 1144,
+        "endedAt": 1771645351054,
+        "modeTag": "aram",
+        "kpPct": "81.3%",
+        "kdaText": "22/11/30"
+      },
+      {
+        "id": "NA1_5496235213",
+        "champion": "Jayce",
+        "queueId": 450,
+        "queueName": "ARAM",
+        "win": true,
+        "kills": 16,
+        "deaths": 9,
+        "assists": 19,
+        "kdaRatio": 3.888888888888889,
+        "cs": 65,
+        "kp": 0.7446808510638298,
+        "damage": 39084,
+        "gold": 15078,
+        "durationSeconds": 1275,
+        "endedAt": 1771564263378,
+        "modeTag": "aram",
+        "kpPct": "74.5%",
+        "kdaText": "16/9/19"
+      },
+      {
+        "id": "NA1_5490564727",
+        "champion": "Yorick",
+        "queueId": 450,
+        "queueName": "ARAM",
+        "win": true,
+        "kills": 9,
+        "deaths": 10,
+        "assists": 21,
+        "kdaRatio": 3,
+        "cs": 87,
+        "kp": 0.6818181818181818,
+        "damage": 31143,
+        "gold": 16529,
+        "durationSeconds": 1456,
+        "endedAt": 1770953650849,
+        "modeTag": "aram",
+        "kpPct": "68.2%",
+        "kdaText": "9/10/21"
+      }
+    ]
+  },
+  "tft": {
+    "source": "tactics.tools public profile page",
+    "requestedSampleSize": 30,
+    "availableSampleSize": 18,
+    "avgPlacement": 3.5,
+    "top4Rate": 0.7222222222222222,
+    "winRate": 0.5,
+    "mostFrequentQueue": {
+      "name": "Double Up",
+      "count": 18
+    },
+    "topChampions": [
+      {
+        "name": "Fiddlesticks",
+        "count": 9
+      },
+      {
+        "name": "Swain",
+        "count": 9
+      },
+      {
+        "name": "Azir",
+        "count": 8
+      },
+      {
+        "name": "Shyvana",
+        "count": 7
+      },
+      {
+        "name": "Ashe",
+        "count": 6
+      },
+      {
+        "name": "Kindred",
+        "count": 6
+      }
+    ],
+    "topComps": [
+      {
+        "name": "Azir / Fiddlesticks / Kindred",
+        "count": 3
+      },
+      {
+        "name": "Azir / Fiddlesticks / Shyvana",
+        "count": 3
+      },
+      {
+        "name": "Azir / Fiddlesticks / Swain",
+        "count": 3
+      },
+      {
+        "name": "Azir / Shyvana / Swain",
+        "count": 3
+      }
+    ],
+    "playstyleRead": "Usually caps boards pretty high, and tends to survive deep into lobbies.",
+    "queueSeasonStats": {
+      "1160": {
+        "games": 18,
+        "avgPlace": 1.9444444444444444,
+        "top4": 13,
+        "win": 9,
+        "topCarry": "TFT16_Lissandra"
+      }
+    },
+    "seasonStats": {
+      "games": 18,
+      "avgPlace": 3.5,
+      "top4": 13,
+      "win": 9,
+      "topCarry": "TFT16_Lissandra"
+    },
+    "matches": [
+      {
+        "id": "NA1_5469354224",
+        "dateTime": 1768881227831,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 2,
+        "level": 9,
+        "lastRound": 35,
+        "totalDamageToPlayers": 110,
+        "lpDiff": 60,
+        "rankBefore": [
+          "GOLD III",
+          18
+        ],
+        "rankAfter": [
+          "GOLD III",
+          78
+        ],
+        "comp": "Fiddlesticks / Ambessa / Ambessa / Bel Veth",
+        "units": [
+          {
+            "name": "Illaoi",
+            "starLevel": 2,
+            "rarity": 0,
+            "items": []
+          },
+          {
+            "name": "Sion",
+            "starLevel": 2,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Nautilus",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Gangplank",
+            "starLevel": 3,
+            "rarity": 2,
+            "items": [
+              "TFT16_TheDarkinScythe",
+              "UnstableConcoction",
+              "Quicksilver"
+            ]
+          },
+          {
+            "name": "Ambessa",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "UnstableConcoction",
+              "GuardianAngel",
+              "SteraksGage"
+            ]
+          },
+          {
+            "name": "Ambessa",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": []
+          },
+          {
+            "name": "Bel Veth",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "MadredsBloodrazor",
+              "Quicksilver",
+              "RunaansHurricane"
+            ]
+          },
+          {
+            "name": "Swain",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "WarmogsArmor"
+            ]
+          },
+          {
+            "name": "Fiddlesticks",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "ThiefsGloves",
+              "EmptyBag",
+              "EmptyBag"
+            ]
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.5530078299455345,
+          "econ2": 0.385862173798583,
+          "items2": 0.5906857445658229,
+          "augments2": 0.14096722593537242,
+          "contestedRatio3": 0.4756796413098994
+        }
+      },
+      {
+        "id": "NA1_5443137858",
+        "dateTime": 1766291293573,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 7,
+        "level": 9,
+        "lastRound": 30,
+        "totalDamageToPlayers": 31,
+        "lpDiff": -37,
+        "rankBefore": [
+          "GOLD III",
+          55
+        ],
+        "rankAfter": [
+          "GOLD III",
+          18
+        ],
+        "comp": "Azir / Fiddlesticks / Xerath / Lissandra",
+        "units": [
+          {
+            "name": "Ashe",
+            "starLevel": 1,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Sejuani",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": [
+              "ThiefsGloves",
+              "RunaansHurricane",
+              "UnstableConcoction"
+            ]
+          },
+          {
+            "name": "Taric",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "BlueBuff",
+              "Artifact_LightshieldCrest",
+              "GiantsBelt"
+            ]
+          },
+          {
+            "name": "Lissandra",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "ArchangelsStaff",
+              "StatikkShiv",
+              "SpearOfShojin"
+            ]
+          },
+          {
+            "name": "Wukong",
+            "starLevel": 1,
+            "rarity": 4,
+            "items": []
+          },
+          {
+            "name": "Yunara",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "GuinsoosRageblade",
+              "RunaansHurricane",
+              "InfinityEdge"
+            ]
+          },
+          {
+            "name": "Azir",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "ThiefsGloves",
+              "RunaansHurricane",
+              "BlueBuff"
+            ]
+          },
+          {
+            "name": "Fiddlesticks",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "5ThiefsGlovesRadiant",
+              "5TrapClawRadiant",
+              "5IonicSparkRadiant"
+            ]
+          },
+          {
+            "name": "Xerath",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": [
+              "ThiefsGloves",
+              "PowerGauntlet",
+              "BlueBuff"
+            ]
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.2834511715440646,
+          "econ2": -0.7909062768395854,
+          "items2": -0.23528509114330592,
+          "augments2": -0.25613022009676595,
+          "contestedRatio3": 0.6284657218448781
+        }
+      },
+      {
+        "id": "NA1_5443096467",
+        "dateTime": 1766289103137,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 2,
+        "level": 9,
+        "lastRound": 34,
+        "totalDamageToPlayers": 108,
+        "lpDiff": 64,
+        "rankBefore": [
+          "GOLD IV",
+          91
+        ],
+        "rankAfter": [
+          "GOLD III",
+          55
+        ],
+        "comp": "Ryze / Kindred / Lissandra / Taric",
+        "units": [
+          {
+            "name": "Ashe",
+            "starLevel": 2,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Sejuani",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Kobuko",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Kennen",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Taric",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": []
+          },
+          {
+            "name": "Lissandra",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "ArchangelsStaff",
+              "ForceOfNature"
+            ]
+          },
+          {
+            "name": "Wukong",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "Redemption",
+              "NightHarvester",
+              "GargoyleStoneplate"
+            ]
+          },
+          {
+            "name": "Yunara",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "InfinityEdge",
+              "RunaansHurricane",
+              "GuinsoosRageblade"
+            ]
+          },
+          {
+            "name": "Kindred",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Ryze",
+            "starLevel": 2,
+            "rarity": 7,
+            "items": [
+              "SpearOfShojin",
+              "AdaptiveHelm",
+              "JeweledGauntlet"
+            ]
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.6889419885936956,
+          "econ2": 0.41306389430277446,
+          "items2": 0.37005015825680154,
+          "augments2": 0.14936059695286508,
+          "contestedRatio3": 0.7536879351529227
+        }
+      },
+      {
+        "id": "NA1_5441453019",
+        "dateTime": 1766118817398,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 7,
+        "level": 9,
+        "lastRound": 30,
+        "totalDamageToPlayers": 51,
+        "lpDiff": -36,
+        "rankBefore": [
+          "GOLD III",
+          27
+        ],
+        "rankAfter": [
+          "GOLD IV",
+          91
+        ],
+        "comp": "Aurelion Sol / Fiddlesticks / Ornn / Taric",
+        "units": [
+          {
+            "name": "Aphelios",
+            "starLevel": 2,
+            "rarity": 1,
+            "items": [
+              "GargoyleStoneplate"
+            ]
+          },
+          {
+            "name": "Nautilus",
+            "starLevel": 1,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Zoe",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": [
+              "GuinsoosRageblade",
+              "HextechGunblade",
+              "SpearOfShojin"
+            ]
+          },
+          {
+            "name": "Leona",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Taric",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "WarmogsArmor"
+            ]
+          },
+          {
+            "name": "Diana",
+            "starLevel": 1,
+            "rarity": 4,
+            "items": [
+              "ThiefsGloves",
+              "ArchangelsStaff",
+              "HextechGunblade"
+            ]
+          },
+          {
+            "name": "Ornn",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Fiddlesticks",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Aurelion Sol",
+            "starLevel": 2,
+            "rarity": 7,
+            "items": [
+              "Artifact_BlightingJewel",
+              "SpearOfShojin",
+              "GuinsoosRageblade"
+            ]
+          }
+        ],
+        "ratings": null
+      },
+      {
+        "id": "NA1_5441415042",
+        "dateTime": 1766116336962,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 4,
+        "level": 9,
+        "lastRound": 34,
+        "totalDamageToPlayers": 64,
+        "lpDiff": 48,
+        "rankBefore": [
+          "GOLD IV",
+          79
+        ],
+        "rankAfter": [
+          "GOLD III",
+          27
+        ],
+        "comp": "Azir / Volibear / Bel Veth / Kaisa",
+        "units": [
+          {
+            "name": "Kog Maw",
+            "starLevel": 1,
+            "rarity": 0,
+            "items": []
+          },
+          {
+            "name": "Cho Gath",
+            "starLevel": 2,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Malzahar",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": [
+              "StatikkShiv",
+              "MadredsBloodrazor",
+              "RecurveBow"
+            ]
+          },
+          {
+            "name": "Bel Veth",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "ThiefsGloves",
+              "MadredsBloodrazor",
+              "GuardianAngel"
+            ]
+          },
+          {
+            "name": "Rift Herald",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "GargoyleStoneplate",
+              "Redemption",
+              "DragonsClaw"
+            ]
+          },
+          {
+            "name": "Kaisa",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "JeweledGauntlet",
+              "GuinsoosRageblade",
+              "Artifact_NavoriFlickerblades"
+            ]
+          },
+          {
+            "name": "Swain",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "RedBuff"
+            ]
+          },
+          {
+            "name": "Azir",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Volibear",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "ThiefsGloves",
+              "TitansResolve",
+              "Quicksilver"
+            ]
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.20278648697560567,
+          "econ2": 0.31607685412398673,
+          "items2": 0.3658127405103762,
+          "augments2": -0.05145343745307115,
+          "contestedRatio3": 1.2500859522930952
+        }
+      },
+      {
+        "id": "NA1_5438132165",
+        "dateTime": 1765771977687,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 2,
+        "level": 9,
+        "lastRound": 31,
+        "totalDamageToPlayers": 67,
+        "lpDiff": 69,
+        "rankBefore": [
+          "GOLD IV",
+          10
+        ],
+        "rankAfter": [
+          "GOLD IV",
+          79
+        ],
+        "comp": "Azir / Shyvana / Diana / Renekton",
+        "units": [
+          {
+            "name": "Neeko",
+            "starLevel": 2,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Vi",
+            "starLevel": 2,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Leona",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Seraphine",
+            "starLevel": 1,
+            "rarity": 4,
+            "items": [
+              "SpearOfShojin",
+              "Morellonomicon",
+              "JeweledGauntlet"
+            ]
+          },
+          {
+            "name": "Diana",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "TitansResolve",
+              "GuinsoosRageblade",
+              "Bloodthirster"
+            ]
+          },
+          {
+            "name": "Renekton",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "Quicksilver",
+              "SteraksGage",
+              "4OrnnDeathsDefiance"
+            ]
+          },
+          {
+            "name": "Swain",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "GargoyleStoneplate",
+              "Redemption"
+            ]
+          },
+          {
+            "name": "Azir",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Shyvana",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": []
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.4444712631656321,
+          "econ2": 0.3099246917239693,
+          "items2": 0.45973238821833895,
+          "augments2": 0.18488678816136664,
+          "contestedRatio3": 0.28312206969017717
+        }
+      },
+      {
+        "id": "NA1_5438089453",
+        "dateTime": 1765769963599,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 3,
+        "level": 9,
+        "lastRound": 33,
+        "totalDamageToPlayers": 60,
+        "lpDiff": 38,
+        "rankBefore": [
+          "SILVER I",
+          72
+        ],
+        "rankAfter": [
+          "GOLD IV",
+          10
+        ],
+        "comp": "Fiddlesticks / Mel / Azir / Kindred",
+        "units": [
+          {
+            "name": "Briar",
+            "starLevel": 2,
+            "rarity": 0,
+            "items": []
+          },
+          {
+            "name": "Draven",
+            "starLevel": 1,
+            "rarity": 2,
+            "items": [
+              "16VanquisherEmblemItem"
+            ]
+          },
+          {
+            "name": "Ambessa",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "5HandOfJusticeRadiant",
+              "4OrnnInfinityForce",
+              "SteraksGage"
+            ]
+          },
+          {
+            "name": "Nasus",
+            "starLevel": 1,
+            "rarity": 4,
+            "items": []
+          },
+          {
+            "name": "Swain",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "FrozenHeart",
+              "WarmogsArmor",
+              "GargoyleStoneplate"
+            ]
+          },
+          {
+            "name": "Kindred",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Azir",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Fiddlesticks",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "16NoxusEmblemItem"
+            ]
+          },
+          {
+            "name": "Mel",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "Leviathan",
+              "AdaptiveHelm",
+              "JeweledGauntlet"
+            ]
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.06888636473211382,
+          "econ2": 0.08227419890104264,
+          "items2": 0.11356630649874486,
+          "augments2": 0.17557897308417478,
+          "contestedRatio3": 1.3564091137769785
+        }
+      },
+      {
+        "id": "NA1_5435356780",
+        "dateTime": 1765515034040,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 3,
+        "level": 9,
+        "lastRound": 34,
+        "totalDamageToPlayers": 71,
+        "lpDiff": 43,
+        "rankBefore": [
+          "SILVER I",
+          29
+        ],
+        "rankAfter": [
+          "SILVER I",
+          72
+        ],
+        "comp": "Ryze / Lissandra / Taric / Wukong",
+        "units": [
+          {
+            "name": "Ashe",
+            "starLevel": 2,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Sejuani",
+            "starLevel": 1,
+            "rarity": 2,
+            "items": [
+              "Crownguard"
+            ]
+          },
+          {
+            "name": "Kobuko",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": [
+              "ThiefsGloves",
+              "EmptyBag",
+              "EmptyBag"
+            ]
+          },
+          {
+            "name": "Kennen",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Taric",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "ThiefsGloves",
+              "EmptyBag",
+              "EmptyBag"
+            ]
+          },
+          {
+            "name": "Lissandra",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "HextechGunblade",
+              "Artifact_Dawncore",
+              "AdaptiveHelm"
+            ]
+          },
+          {
+            "name": "Wukong",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "WarmogsArmor",
+              "GargoyleStoneplate",
+              "NightHarvester"
+            ]
+          },
+          {
+            "name": "Yunara",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "GuinsoosRageblade",
+              "InfinityEdge",
+              "TFT16_TheDarkinBow"
+            ]
+          },
+          {
+            "name": "Ryze",
+            "starLevel": 1,
+            "rarity": 7,
+            "items": [
+              "RapidFireCannon"
+            ]
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.49797225478399554,
+          "econ2": 0.08136722116483987,
+          "items2": 0.3932448900338009,
+          "augments2": 0.07540190312665374,
+          "contestedRatio3": 0.7179236933725757
+        }
+      },
+      {
+        "id": "NA1_5435310625",
+        "dateTime": 1765512857544,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 5,
+        "level": 9,
+        "lastRound": 33,
+        "totalDamageToPlayers": 65,
+        "lpDiff": -16,
+        "rankBefore": [
+          "SILVER I",
+          45
+        ],
+        "rankAfter": [
+          "SILVER I",
+          29
+        ],
+        "comp": "Fiddlesticks / Azir / Shyvana / Diana",
+        "units": [
+          {
+            "name": "Neeko",
+            "starLevel": 1,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Vi",
+            "starLevel": 2,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Leona",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": [
+              "BrambleVest",
+              "Redemption",
+              "IonicSpark"
+            ]
+          },
+          {
+            "name": "Seraphine",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "Artifact_LudensTempest",
+              "AdaptiveHelm",
+              "MadredsBloodrazor"
+            ]
+          },
+          {
+            "name": "Diana",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "4OrnnZhonyasParadox",
+              "GuinsoosRageblade",
+              "TitansResolve"
+            ]
+          },
+          {
+            "name": "Swain",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": []
+          },
+          {
+            "name": "Azir",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Fiddlesticks",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "RapidFireCannon"
+            ]
+          },
+          {
+            "name": "Shyvana",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": [
+              "Bloodthirster",
+              "SteraksGage",
+              "FrozenHeart"
+            ]
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.19414012565013006,
+          "econ2": -0.12170596894810287,
+          "items2": -0.11807448586267687,
+          "augments2": -0.06544434935413544,
+          "contestedRatio3": 0.9090779539475747
+        }
+      },
+      {
+        "id": "NA1_5434506929",
+        "dateTime": 1765429766293,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 2,
+        "level": 9,
+        "lastRound": 34,
+        "totalDamageToPlayers": 73,
+        "lpDiff": 68,
+        "rankBefore": [
+          "SILVER II",
+          77
+        ],
+        "rankAfter": [
+          "SILVER I",
+          45
+        ],
+        "comp": "tft 16 _atakhan / Azir / Xerath / Fiddlesticks",
+        "units": [
+          {
+            "name": "Draven",
+            "starLevel": 1,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Renekton",
+            "starLevel": 1,
+            "rarity": 4,
+            "items": [
+              "SteraksGage",
+              "UnstableConcoction",
+              "MadredsBloodrazor"
+            ]
+          },
+          {
+            "name": "Swain",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "GargoyleStoneplate",
+              "DragonsClaw",
+              "BrambleVest"
+            ]
+          },
+          {
+            "name": "Kindred",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": [
+              "16NoxusEmblemItem",
+              "16GunslingerEmblemItem",
+              "RunaansHurricane"
+            ]
+          },
+          {
+            "name": "Azir",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "JeweledGauntlet",
+              "SpearOfShojin"
+            ]
+          },
+          {
+            "name": "Fiddlesticks",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": [
+              "Morellonomicon"
+            ]
+          },
+          {
+            "name": "Shyvana",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": [
+              "SteraksGage"
+            ]
+          },
+          {
+            "name": "Mel",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Xerath",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "JeweledGauntlet"
+            ]
+          },
+          {
+            "name": "tft 16 _atakhan",
+            "starLevel": 1,
+            "rarity": 9,
+            "items": []
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.7072720938348503,
+          "econ2": 0.1484492491797138,
+          "items2": 0.06319602498570753,
+          "augments2": 0.22513857291675132,
+          "contestedRatio3": 0.2741812111408002
+        }
+      },
+      {
+        "id": "NA1_5433530104",
+        "dateTime": 1765339891940,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 2,
+        "level": 10,
+        "lastRound": 35,
+        "totalDamageToPlayers": 93,
+        "lpDiff": 63,
+        "rankBefore": [
+          "SILVER II",
+          14
+        ],
+        "rankAfter": [
+          "SILVER II",
+          77
+        ],
+        "comp": "Fiddlesticks / Kindred / Ornn / Azir",
+        "units": [
+          {
+            "name": "Ashe",
+            "starLevel": 1,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Vi",
+            "starLevel": 1,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Sejuani",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Loris",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Braum",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "GargoyleStoneplate",
+              "BrambleVest",
+              "Artifact_TalismanOfAscension"
+            ]
+          },
+          {
+            "name": "Ornn",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "FrozenHeart",
+              "16IxtalEmblemItem"
+            ]
+          },
+          {
+            "name": "Kindred",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "GuinsoosRageblade",
+              "RunaansHurricane",
+              "GuinsoosRageblade"
+            ]
+          },
+          {
+            "name": "Azir",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Fiddlesticks",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "InfinityEdge",
+              "Morellonomicon",
+              "TacticiansRing"
+            ]
+          },
+          {
+            "name": "Lucian",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": [
+              "4OrnnInfinityForce"
+            ]
+          },
+          {
+            "name": "Shyvana",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": []
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.6580935458977775,
+          "econ2": 0.21776497760609587,
+          "items2": 0.1672912014889689,
+          "augments2": 0.20821244436522132,
+          "contestedRatio3": 0.5043329312157547
+        }
+      },
+      {
+        "id": "NA1_5432583588",
+        "dateTime": 1765252755097,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 2,
+        "level": 10,
+        "lastRound": 37,
+        "totalDamageToPlayers": 60,
+        "lpDiff": 65,
+        "rankBefore": [
+          "SILVER III",
+          49
+        ],
+        "rankAfter": [
+          "SILVER II",
+          14
+        ],
+        "comp": "Ornn / Fiddlesticks / Volibear / Zilean",
+        "units": [
+          {
+            "name": "Qiyana",
+            "starLevel": 1,
+            "rarity": 0,
+            "items": []
+          },
+          {
+            "name": "Kobuko",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Milio",
+            "starLevel": 1,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Lissandra",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": []
+          },
+          {
+            "name": "Braum",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "GargoyleStoneplate",
+              "WarmogsArmor",
+              "Redemption"
+            ]
+          },
+          {
+            "name": "Skarner",
+            "starLevel": 3,
+            "rarity": 4,
+            "items": [
+              "AdaptiveHelm",
+              "Artifact_WitsEnd",
+              "UnstableConcoction"
+            ]
+          },
+          {
+            "name": "Ornn",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "IonicSpark",
+              "InfinityEdge"
+            ]
+          },
+          {
+            "name": "Zilean",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": [
+              "StatikkShiv",
+              "RabadonsDeathcap",
+              "SpearOfShojin"
+            ]
+          },
+          {
+            "name": "Fiddlesticks",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": [
+              "ThiefsGloves",
+              "DragonsClaw",
+              "Deathblade"
+            ]
+          },
+          {
+            "name": "Volibear",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": [
+              "InfinityEdge"
+            ]
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.2910877533780508,
+          "econ2": 0.2740205139970501,
+          "items2": 0.20367454811053468,
+          "augments2": 0.2475686630350237,
+          "contestedRatio3": 0.4080881632487166
+        }
+      },
+      {
+        "id": "NA1_5432537338",
+        "dateTime": 1765250632417,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 5,
+        "level": 8,
+        "lastRound": 31,
+        "totalDamageToPlayers": 66,
+        "lpDiff": -16,
+        "rankBefore": [
+          "SILVER III",
+          65
+        ],
+        "rankAfter": [
+          "SILVER III",
+          49
+        ],
+        "comp": "Azir / Bel Veth / Kaisa / Rift Herald",
+        "units": [
+          {
+            "name": "Kog Maw",
+            "starLevel": 1,
+            "rarity": 0,
+            "items": []
+          },
+          {
+            "name": "Rek Sai",
+            "starLevel": 2,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Cho Gath",
+            "starLevel": 2,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Bel Veth",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "16LongshotEmblemItem",
+              "Bloodthirster",
+              "Deathblade"
+            ]
+          },
+          {
+            "name": "Rift Herald",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "AdaptiveHelm",
+              "InfinityEdge",
+              "Redemption"
+            ]
+          },
+          {
+            "name": "Kaisa",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "MadredsBloodrazor",
+              "GuinsoosRageblade",
+              "GuinsoosRageblade"
+            ]
+          },
+          {
+            "name": "Swain",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": []
+          },
+          {
+            "name": "Azir",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": [
+              "PowerGauntlet",
+              "16SlayerEmblemItem"
+            ]
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.024921379677078304,
+          "econ2": -0.02665904012882435,
+          "items2": -0.18369972296243808,
+          "augments2": -0.04476507819732134,
+          "contestedRatio3": 0.8210891638917395
+        }
+      },
+      {
+        "id": "NA1_5431597295",
+        "dateTime": 1765163857419,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 2,
+        "level": 9,
+        "lastRound": 35,
+        "totalDamageToPlayers": 103,
+        "rankAfter": [
+          "SILVER III",
+          65
+        ],
+        "comp": "Kindred / Shyvana / Tahm Kench / Volibear",
+        "units": [
+          {
+            "name": "Ashe",
+            "starLevel": 2,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Nautilus",
+            "starLevel": 3,
+            "rarity": 2,
+            "items": [
+              "16Bilgewater_PileOCitrus",
+              "GargoyleStoneplate",
+              "WarmogsArmor"
+            ]
+          },
+          {
+            "name": "Miss Fortune",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "InfinityEdge",
+              "16Bilgewater_FirstMatesFlintlock",
+              "16Bilgewater_LuckyEyepatch"
+            ]
+          },
+          {
+            "name": "Braum",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": []
+          },
+          {
+            "name": "Kindred",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "GuinsoosRageblade",
+              "Morellonomicon",
+              "MadredsBloodrazor"
+            ]
+          },
+          {
+            "name": "Lucian",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Shyvana",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Tahm Kench",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "GargoyleStoneplate",
+              "FrozenHeart",
+              "Redemption"
+            ]
+          },
+          {
+            "name": "Volibear",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "UnstableConcoction",
+              "4OrnnInfinityForce"
+            ]
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.5448034081142812,
+          "econ2": 0.514908499628691,
+          "items2": 0.3683967860196264,
+          "augments2": 0.15654035936971428,
+          "contestedRatio3": 0.6693458983011653
+        }
+      },
+      {
+        "id": "NA1_5431549799",
+        "dateTime": 1765161544311,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 4,
+        "level": 9,
+        "lastRound": 35,
+        "totalDamageToPlayers": 62,
+        "comp": "Annie Tibbers / Sylas / Annie / Lucian",
+        "units": [
+          {
+            "name": "Kobuko",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": [
+              "ThiefsGloves",
+              "RunaansHurricane",
+              "AdaptiveHelm"
+            ]
+          },
+          {
+            "name": "Kennen",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Swain",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": []
+          },
+          {
+            "name": "Annie",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "Leviathan",
+              "BlueBuff",
+              "StatikkShiv"
+            ]
+          },
+          {
+            "name": "Zilean",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Lucian",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "BFSword"
+            ]
+          },
+          {
+            "name": "Shyvana",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Sylas",
+            "starLevel": 1,
+            "rarity": 7,
+            "items": [
+              "WarmogsArmor",
+              "GuardianAngel",
+              "UnstableConcoction"
+            ]
+          },
+          {
+            "name": "Annie Tibbers",
+            "starLevel": 2,
+            "rarity": 9,
+            "items": [
+              "BrambleVest",
+              "WarmogsArmor",
+              "NightHarvester"
+            ]
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.14580512225859898,
+          "econ2": 0.1239931466860438,
+          "items2": 0.1381621353279282,
+          "augments2": 0.014194217760353572,
+          "contestedRatio3": 0.808306855057179
+        }
+      },
+      {
+        "id": "NA1_5428614828",
+        "dateTime": 1764910412108,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 2,
+        "level": 9,
+        "lastRound": 38,
+        "totalDamageToPlayers": 91,
+        "comp": "Kindred / Ornn / Volibear / Braum",
+        "units": [
+          {
+            "name": "Anivia",
+            "starLevel": 2,
+            "rarity": 0,
+            "items": []
+          },
+          {
+            "name": "Ashe",
+            "starLevel": 2,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Tryndamere",
+            "starLevel": 2,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Sejuani",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Lissandra",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "Leviathan",
+              "SpearOfShojin",
+              "JeweledGauntlet"
+            ]
+          },
+          {
+            "name": "Braum",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "WarmogsArmor",
+              "GargoyleStoneplate",
+              "NightHarvester"
+            ]
+          },
+          {
+            "name": "Ornn",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "Artifact_VoidGauntlet",
+              "Redemption"
+            ]
+          },
+          {
+            "name": "Kindred",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "GuinsoosRageblade"
+            ]
+          },
+          {
+            "name": "Volibear",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "Artifact_WitsEnd",
+              "UnstableConcoction",
+              "AdaptiveHelm"
+            ]
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.6843509810934757,
+          "econ2": -0.16867951951555415,
+          "items2": -0.11927148481124805,
+          "augments2": 0.29608793234890884,
+          "contestedRatio3": 0.07017625196071613
+        }
+      },
+      {
+        "id": "NA1_5428577268",
+        "dateTime": 1764908247942,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 7,
+        "level": 8,
+        "lastRound": 27,
+        "totalDamageToPlayers": 33,
+        "comp": "Ornn / Volibear / Zilean / Braum",
+        "units": [
+          {
+            "name": "Anivia",
+            "starLevel": 1,
+            "rarity": 0,
+            "items": []
+          },
+          {
+            "name": "Sejuani",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": [
+              "NegatronCloak"
+            ]
+          },
+          {
+            "name": "Kobuko",
+            "starLevel": 2,
+            "rarity": 2,
+            "items": []
+          },
+          {
+            "name": "Lissandra",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "HextechGunblade",
+              "SpearOfShojin",
+              "JeweledGauntlet"
+            ]
+          },
+          {
+            "name": "Braum",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": [
+              "GargoyleStoneplate",
+              "WarmogsArmor",
+              "FrozenHeart"
+            ]
+          },
+          {
+            "name": "Ornn",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Zilean",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": [
+              "SpearOfShojin"
+            ]
+          },
+          {
+            "name": "Volibear",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": [
+              "TFT16_TheDarkinScythe",
+              "RunaansHurricane",
+              "4OrnnDeathsDefiance"
+            ]
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": -0.16573309737973593,
+          "econ2": -0.7079998942065386,
+          "items2": -0.6192718751569929,
+          "augments2": -0.14917855559488233,
+          "contestedRatio3": 0.5116256749651563
+        }
+      },
+      {
+        "id": "NA1_5427571548",
+        "dateTime": 1764820084855,
+        "queueId": 1160,
+        "queueName": "Double Up",
+        "placement": 2,
+        "level": 9,
+        "lastRound": 31,
+        "totalDamageToPlayers": 83,
+        "comp": "Annie Tibbers / Sylas / Fiddlesticks / Shyvana",
+        "units": [
+          {
+            "name": "Neeko",
+            "starLevel": 2,
+            "rarity": 1,
+            "items": []
+          },
+          {
+            "name": "Lux",
+            "starLevel": 2,
+            "rarity": 4,
+            "items": []
+          },
+          {
+            "name": "Swain",
+            "starLevel": 1,
+            "rarity": 4,
+            "items": [
+              "NegatronCloak"
+            ]
+          },
+          {
+            "name": "Annie",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": [
+              "BlueBuff",
+              "MadredsBloodrazor",
+              "AdaptiveHelm"
+            ]
+          },
+          {
+            "name": "Ornn",
+            "starLevel": 1,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Fiddlesticks",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": []
+          },
+          {
+            "name": "Shyvana",
+            "starLevel": 2,
+            "rarity": 6,
+            "items": [
+              "7ShimmerscaleGamblersBlade"
+            ]
+          },
+          {
+            "name": "Sylas",
+            "starLevel": 1,
+            "rarity": 7,
+            "items": [
+              "HextechGunblade"
+            ]
+          },
+          {
+            "name": "Annie Tibbers",
+            "starLevel": 1,
+            "rarity": 9,
+            "items": [
+              "WarmogsArmor",
+              "GargoyleStoneplate",
+              "Redemption"
+            ]
+          }
+        ],
+        "ratings": {
+          "meta": 0,
+          "econ": 0,
+          "items": 0,
+          "augments": 0,
+          "meta2": 0.40227231750291753,
+          "econ2": -0.1162442999150109,
+          "items2": 0.29354837718474264,
+          "augments2": 0.2706614130046721,
+          "contestedRatio3": 0.5264175056887254
+        }
+      }
+    ]
+  }
+}

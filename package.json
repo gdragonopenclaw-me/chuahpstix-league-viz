@@ -1,0 +1,10 @@
+{
+  "name": "chuahpstix-league-viz",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate-data": "node scripts/generate-data.mjs",
+    "build": "node scripts/generate-data.mjs && node scripts/validate.mjs",
+    "validate": "node scripts/validate.mjs"
+  }
+}
