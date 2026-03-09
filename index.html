@@ -3,211 +3,198 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chuahpstix League + TFT Snapshot</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>chuahpstix deep scout</title>
   <style>
     :root {
-      --bg: #0b1020;
-      --bg2: #0f1733;
-      --card: #141b34;
-      --card-soft: #101733;
-      --muted: #98a3d6;
-      --text: #e9eeff;
-      --border: #2a3567;
-      --accent: #ff7a59;
-      --accent-2: #8bc2ff;
-      --ok: #66d9a6;
-      --warn: #ffcc80;
-      --tft-bg: #140f29;
-      --tft-card: #1d1538;
-      --tft-border: #4c3f80;
-      --tft-accent: #b88cff;
-      --tft-accent-2: #6de0ff;
+      --bg: #08101f;
+      --bg2: #101938;
+      --card: rgba(18, 27, 55, 0.88);
+      --card-soft: rgba(14, 21, 46, 0.88);
+      --border: rgba(151, 178, 255, 0.16);
+      --text: #edf2ff;
+      --muted: #9fb0e3;
+      --accent: #7cc9ff;
+      --accent2: #ffa07d;
+      --good: #76e0a7;
+      --bad: #ff9e9e;
+      --warn: #ffd28f;
+      --tft-card: rgba(30, 20, 54, 0.94);
+      --tft-border: rgba(199, 150, 255, 0.2);
+      --pill: rgba(255,255,255,0.05);
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: Inter, system-ui, sans-serif;
-      background: linear-gradient(180deg, var(--bg), var(--bg2));
       color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(124,201,255,0.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(255,160,125,0.1), transparent 24%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
     }
-    img { display: block; max-width: 100%; }
-    .wrap { max-width: 1120px; margin: 0 auto; padding: 28px 20px 48px; }
-    .hero { display: flex; gap: 18px; justify-content: space-between; align-items: end; flex-wrap: wrap; margin-bottom: 18px; }
+    a { color: #b7dbff; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 18px 44px; }
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: end;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
     .badge {
-      display: inline-block;
-      background: #2f1b17;
-      color: #ffb39f;
-      border: 1px solid #6d3a2d;
-      border-radius: 999px;
-      padding: 5px 10px;
-      font-size: 12px;
-      margin-bottom: 10px;
-    }
-    .badge.tft { background: #24183f; color: #d5c2ff; border-color: #574786; }
-    .badge.snorlax { background: #152838; color: #bfe7ff; border-color: #31556d; }
-    h1 { margin: 0 0 8px; font-size: 34px; }
-    h2 { margin: 0 0 8px; font-size: 24px; }
-    h3 { margin: 0 0 10px; font-size: 18px; }
-    p { margin: 0; }
-    .sub { color: var(--muted); }
-    .meta-line { color: #c6d0fb; font-size: 14px; }
-    .grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 16px; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 12px 30px rgba(4, 8, 20, 0.22);
-    }
-    .card.soft { background: var(--card-soft); }
-    .card.tft {
-      background: linear-gradient(180deg, rgba(29,21,56,0.98), rgba(20,15,41,0.98));
-      border-color: var(--tft-border);
-    }
-    .card.snorlax {
-      background: linear-gradient(180deg, rgba(13, 29, 40, 0.98), rgba(11, 22, 35, 0.98));
-      border-color: #325671;
-      overflow: hidden;
-    }
-    .stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-    .stat {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 14px;
-      padding: 12px;
-    }
-    .stat .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
-    .stat .val { font-size: 26px; font-weight: 700; margin-top: 5px; }
-    .stat .hint { color: #c7d2ff; font-size: 13px; margin-top: 5px; }
-    .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .list { display: flex; flex-direction: column; gap: 10px; }
-    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
-    .pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      font-size: 12px;
+      color: #cfe4ff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(124,201,255,0.1);
+      border: 1px solid rgba(124,201,255,0.22);
+      margin-bottom: 12px;
+    }
+    .badge.tft {
+      background: rgba(184,140,255,0.12);
+      border-color: rgba(184,140,255,0.22);
+      color: #ead9ff;
+    }
+    h1 { margin: 0 0 8px; font-size: 38px; }
+    h2 { margin: 0; font-size: 24px; }
+    h3 { margin: 0 0 10px; font-size: 17px; }
+    p { margin: 0; }
+    .sub { color: var(--muted); line-height: 1.6; max-width: 760px; }
+    .meta-line { color: #cad5ff; font-size: 14px; }
+    .grid-2 { display: grid; grid-template-columns: 1.15fr .85fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 16px 38px rgba(0,0,0,0.22);
+      backdrop-filter: blur(8px);
+    }
+    .card.soft { background: var(--card-soft); }
+    .card.tft {
+      background: linear-gradient(180deg, rgba(32,22,59,0.96), rgba(22,16,43,0.98));
+      border-color: var(--tft-border);
+    }
+    .section { margin-top: 18px; }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .kicker {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 6px;
+    }
+    .muted { color: var(--muted); }
+    .small { font-size: 13px; }
+    .stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .stat {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 15px;
+      padding: 12px;
+    }
+    .stat .label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .stat .val { font-size: 25px; font-weight: 700; margin-top: 6px; }
+    .stat .hint { margin-top: 6px; font-size: 13px; color: #cad6ff; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.04);
-      padding: 7px 11px;
-      color: #e8edff;
+      background: var(--pill);
+      padding: 8px 12px;
       font-size: 13px;
+      color: #edf2ff;
     }
     .result-strip { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 8px; }
     .result-box {
-      text-align: center;
-      border-radius: 10px;
-      padding: 10px 4px;
-      font-weight: 700;
+      border-radius: 12px;
+      padding: 10px 6px;
       font-size: 12px;
       border: 1px solid transparent;
-    }
-    .win { background: rgba(102,217,166,0.14); color: #9ff0c7; border-color: rgba(102,217,166,0.28); }
-    .loss { background: rgba(255,122,89,0.14); color: #ffb39f; border-color: rgba(255,122,89,0.28); }
-    .queue-bars { display: flex; flex-direction: column; gap: 10px; }
-    .bar-row { display: grid; grid-template-columns: 130px 1fr auto; gap: 10px; align-items: center; font-size: 14px; }
-    .bar-track { height: 10px; border-radius: 999px; background: rgba(255,255,255,0.07); overflow: hidden; }
-    .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
-    .bar-fill.tft { background: linear-gradient(90deg, var(--tft-accent), var(--tft-accent-2)); }
-    .bar-fill.teammate { background: linear-gradient(90deg, #6de0ff, #8bc2ff); }
-    .read { color: #d7e0ff; line-height: 1.55; }
-    .section { margin-top: 18px; }
-    .section-head { display: flex; justify-content: space-between; gap: 10px; align-items: end; margin-bottom: 12px; flex-wrap: wrap; }
-    .kicker { color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-size: 11px; margin-bottom: 6px; }
-    .foot { margin-top: 16px; color: #bcc8fb; font-size: 13px; line-height: 1.5; }
-    .muted-small { color: var(--muted); font-size: 13px; }
-    .canvas-wrap { height: 290px; }
-    .canvas-wrap.small { height: 240px; }
-    .empty { color: var(--muted); font-size: 14px; }
-    .teammate-table { display: flex; flex-direction: column; gap: 10px; }
-    .teammate-row {
-      display: grid;
-      grid-template-columns: 32px minmax(160px, 1.4fr) 80px 92px minmax(140px, 1fr);
-      gap: 10px;
-      align-items: center;
-      padding: 11px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(255,255,255,0.03);
-    }
-    .teammate-rank {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      font-weight: 700;
-      color: #d5ebff;
-      background: rgba(109, 224, 255, 0.12);
-      border: 1px solid rgba(109, 224, 255, 0.24);
-    }
-    .teammate-main { min-width: 0; }
-    .teammate-name {
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      overflow-wrap: normal;
-      word-break: normal;
-    }
-    .teammate-meta { color: #c6d0fb; font-size: 14px; }
-    .teammate-stats {
-      display: contents;
-    }
-    .teammate-games,
-    .teammate-record { white-space: nowrap; }
-    .teammate-wr {
+      text-align: center;
+      min-height: 78px;
       display: flex;
       flex-direction: column;
-      gap: 5px;
-      min-width: 0;
+      justify-content: center;
+      gap: 3px;
     }
-    .snorlax-wrap { display: grid; grid-template-columns: 180px 1fr; gap: 16px; align-items: center; }
-    .snorlax-art {
-      background: radial-gradient(circle at top, rgba(255,255,255,0.14), rgba(255,255,255,0.02));
-      border-radius: 20px;
+    .win { background: rgba(118,224,167,0.12); color: #bdf7d6; border-color: rgba(118,224,167,0.26); }
+    .loss { background: rgba(255,160,125,0.12); color: #ffd0c0; border-color: rgba(255,160,125,0.26); }
+    .bar-list { display: flex; flex-direction: column; gap: 10px; }
+    .bar-row { display: grid; grid-template-columns: 150px 1fr auto; gap: 10px; align-items: center; font-size: 14px; }
+    .track { height: 10px; border-radius: 999px; background: rgba(255,255,255,0.07); overflow: hidden; }
+    .fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+    .fill.good { background: linear-gradient(90deg, #65d9ff, #76e0a7); }
+    .fill.bad { background: linear-gradient(90deg, #ffb38f, #ff8e9a); }
+    .read { color: #dbe5ff; line-height: 1.62; }
+    .table { display: flex; flex-direction: column; gap: 10px; }
+    .row {
+      display: grid;
+      gap: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.03);
+      border-radius: 15px;
+      padding: 12px;
+    }
+    .identity-row { grid-template-columns: minmax(0, 1.3fr) 76px 82px 110px 110px 88px; }
+    .enemy-row { grid-template-columns: minmax(0, 1.4fr) 72px 90px 96px 1fr; }
+    .record-row { grid-template-columns: 1fr auto; align-items: center; }
+    .signal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .signal {
+      border-radius: 16px;
       padding: 14px;
-      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
     }
-    .snorlax-caption { color: #d8ebff; line-height: 1.6; }
-    a { color: #9dccff; }
-    @media (max-width: 980px) {
-      .grid, .mini-grid { grid-template-columns: 1fr; }
+    .signal .topline {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+    .signal .score { color: #a8dfff; font-weight: 700; }
+    .split-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+    .split {
+      border-radius: 15px;
+      padding: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .split.goodish { border-color: rgba(118,224,167,0.22); }
+    .split.badish { border-color: rgba(255,160,125,0.22); }
+    .teammate-row { grid-template-columns: minmax(0, 1.5fr) 76px 96px 1fr; }
+    .foot { margin-top: 14px; color: #c3cff9; font-size: 13px; line-height: 1.6; }
+    .empty { color: var(--muted); font-size: 14px; }
+    @media (max-width: 1020px) {
+      .grid-2, .grid-3, .signal-grid, .split-grid { grid-template-columns: 1fr; }
       .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .snorlax-wrap { grid-template-columns: 1fr; }
     }
     @media (max-width: 760px) {
-      .teammate-row {
-        grid-template-columns: 32px minmax(0, 1fr);
-        align-items: start;
-      }
-      .teammate-stats {
-        grid-column: 2;
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 6px 12px;
-        align-items: start;
-      }
-      .teammate-wr {
-        grid-column: 1 / -1;
-      }
-    }
-    @media (max-width: 460px) {
-      .teammate-stats {
-        grid-template-columns: 1fr;
-      }
-      .teammate-name {
-        white-space: normal;
-        overflow: visible;
-        text-overflow: clip;
-      }
-    }
-    @media (max-width: 640px) {
-      h1 { font-size: 28px; }
-      .stat-grid { grid-template-columns: 1fr 1fr; }
+      h1 { font-size: 30px; }
       .result-strip { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-      .bar-row { grid-template-columns: 90px 1fr auto; }
+      .identity-row, .enemy-row, .record-row, .teammate-row { grid-template-columns: 1fr; }
+      .bar-row { grid-template-columns: 96px 1fr auto; }
     }
   </style>
 </head>
@@ -215,62 +202,36 @@
   <div class="wrap">
     <div class="hero">
       <div>
-        <div class="badge">scouting snapshot + live-ish stat pull</div>
-        <h1>chuahpstix: league + tft snapshot</h1>
-        <p class="sub">same playful profile, now grounded in recent match data instead of just vibes.</p>
+        <div class="badge">riot-backed deep sample rebuild</div>
+        <h1>chuahpstix: deeper league identity</h1>
+        <p class="sub">less mascot energy, more actual evidence. this version uses a much deeper Riot-visible history window, folds in champion mastery, and tries to separate real player identity from a noisy recent streak.</p>
       </div>
       <div class="meta-line" id="updated-at">loading latest refresh…</div>
     </div>
 
-    <div class="grid section">
+    <div class="grid-2 section">
       <div class="card">
         <div class="section-head">
           <div>
             <div class="kicker">league of legends</div>
-            <h2>last 10 league games</h2>
+            <h2>deep sample snapshot</h2>
           </div>
-          <div class="muted-small" id="league-sample-note"></div>
+          <div class="muted small" id="league-window"></div>
         </div>
         <div class="stat-grid" id="league-stats"></div>
         <div class="section">
-          <h3>recent results</h3>
+          <h3>recent 10 results</h3>
           <div class="result-strip" id="league-results"></div>
         </div>
-        <div class="section mini-grid">
+        <div class="section grid-2" style="grid-template-columns: 1fr 1fr;">
           <div class="card soft">
-            <h3>top champions</h3>
+            <h3>champion + queue mix</h3>
             <div class="pill-row" id="league-champs"></div>
+            <div class="section bar-list" id="league-queues"></div>
           </div>
           <div class="card soft">
-            <h3>queue mix</h3>
-            <div class="queue-bars" id="league-queues"></div>
-          </div>
-        </div>
-        <div class="section">
-          <h3>quick read</h3>
-          <p class="read" id="league-read"></p>
-        </div>
-        <div class="section mini-grid">
-          <div class="card soft">
-            <div class="section-head">
-              <div>
-                <h3>most-played teammates</h3>
-                <p class="muted-small" id="teammate-note"></p>
-              </div>
-            </div>
-            <div class="teammate-table" id="league-teammates"></div>
-          </div>
-          <div class="card snorlax">
-            <div class="badge snorlax">snorlax evidence</div>
-            <div class="snorlax-wrap">
-              <div class="snorlax-art">
-                <img src="./assets/snorlax.png" alt="Snorlax official artwork" />
-              </div>
-              <div>
-                <h3>the chuah-snorlax comp</h3>
-                <p class="snorlax-caption">because the scouting report said Snorlax, the page now owns it. sturdy, unbothered, and somehow still the center of the fight when everyone else is running around lol.</p>
-              </div>
-            </div>
+            <h3>quick read</h3>
+            <p class="read" id="league-read"></p>
           </div>
         </div>
       </div>
@@ -278,70 +239,131 @@
       <div class="card">
         <div class="section-head">
           <div>
-            <div class="kicker">profile radar</div>
-            <h2>recent league shape</h2>
+            <div class="kicker">social map</div>
+            <h2>most-played teammates</h2>
+          </div>
+          <div class="muted small" id="teammate-note"></div>
+        </div>
+        <div class="table" id="league-teammates"></div>
+      </div>
+    </div>
+
+    <div class="grid-2 section">
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <div class="kicker">champion identity tracker</div>
+            <h2>true champion pool</h2>
+          </div>
+          <div class="muted small" id="mastery-note"></div>
+        </div>
+        <div class="table" id="identity-table"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <div class="kicker">where identity bends</div>
+            <h2>mastery vs results</h2>
           </div>
         </div>
-        <div class="canvas-wrap"><canvas id="radar"></canvas></div>
-        <p class="foot">radar is still scouting-style, but it now keys off the recent sample: KDA efficiency, fight involvement, CS volume, damage/gold, win conversion, and a little chaos allowance for ARAM-heavy stretch lol.</p>
+        <div class="card soft">
+          <h3>high familiarity, weaker outcomes</h3>
+          <div class="table" id="high-familiarity"></div>
+        </div>
+        <div class="section card soft">
+          <h3>lower familiarity, stronger outcomes</h3>
+          <div class="table" id="low-familiarity"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2 section">
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <div class="kicker">signature play</div>
+            <h2>what the data actually supports</h2>
+          </div>
+        </div>
+        <div class="signal-grid" id="signature-signals"></div>
+        <p class="foot" id="signature-note"></p>
+      </div>
+
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <div class="kicker">playtime personality</div>
+            <h2>when the games hit best</h2>
+          </div>
+        </div>
+        <div class="split-grid" id="playtime-bands"></div>
+        <div class="section">
+          <h3>read</h3>
+          <p class="read" id="playtime-read"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2 section">
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <div class="kicker">worst enemy</div>
+            <h2>enemy champs that keep showing up in bad games</h2>
+          </div>
+        </div>
+        <div class="table" id="worst-enemies"></div>
+        <p class="foot" id="worst-enemy-note"></p>
+      </div>
+
+      <div class="card">
+        <div class="section-head">
+          <div>
+            <div class="kicker">personal records</div>
+            <h2>career-style highs from this fetched window</h2>
+          </div>
+        </div>
+        <div class="table" id="records"></div>
+        <p class="foot" id="records-note"></p>
       </div>
     </div>
 
     <div class="card tft section">
       <div class="section-head">
         <div>
-          <div class="badge tft">teamfight tactics analysis</div>
+          <div class="badge tft">tft still lives here too</div>
           <h2>tft recent board read</h2>
           <p class="sub" id="tft-sub"></p>
         </div>
       </div>
-
       <div class="stat-grid" id="tft-stats"></div>
-
-      <div class="section mini-grid">
+      <div class="section grid-2" style="grid-template-columns: 1fr 1fr;">
         <div class="card tft">
           <h3>top repeated boards</h3>
-          <div class="list" id="tft-comps"></div>
+          <div class="table" id="tft-comps"></div>
         </div>
         <div class="card tft">
           <h3>most-used units</h3>
           <div class="pill-row" id="tft-units"></div>
-        </div>
-      </div>
-
-      <div class="section mini-grid">
-        <div class="card tft">
-          <h3>placement spread</h3>
-          <div class="canvas-wrap small"><canvas id="placements"></canvas></div>
-        </div>
-        <div class="card tft">
-          <h3>queue frequency</h3>
-          <div class="queue-bars" id="tft-queues"></div>
           <div class="section">
             <h3>playstyle read</h3>
             <p class="read" id="tft-read"></p>
           </div>
         </div>
       </div>
-
-      <p class="foot">tft comes from the currently available public profile sample. if the source only exposes fewer than 30 recent matches, this section uses the full available set and says so plainly.</p>
     </div>
 
     <div class="card section">
       <h3 style="margin-top:0">notes</h3>
-      <p class="foot">League data is fetched from Riot match-v5 for the last 10 matches, plus a deeper recent-history pass for the teammate leaderboard. TFT data is parsed from the current public profile payload on tactics.tools because this Riot key is accepting League endpoints but returning 403 on TFT match endpoints in this environment. the page stays static and GitHub Pages-friendly by rendering from a generated JSON snapshot.</p>
+      <p class="foot">League analytics here come from Riot account-v1, summoner-v4, champion-mastery-v4, and match-v5. "deep sample" means the full currently fetchable Riot-visible window this build could pull safely with pagination and rate-limit-aware requests, not guaranteed all-time history. TFT still comes from the public tactics.tools payload because this environment is still not getting reliable Riot TFT match access.</p>
     </div>
   </div>
 
   <script>
+    const byId = (id) => document.getElementById(id);
     const pct = (value, digits = 1) => `${(value * 100).toFixed(digits)}%`;
     const fmt = (value, digits = 1) => Number(value).toFixed(digits);
-    const byId = (id) => document.getElementById(id);
-
-    const radarEl = byId('radar');
-    const placementsEl = byId('placements');
-    let radarChart;
-    let placementsChart;
 
     function renderStatGrid(container, stats) {
       container.innerHTML = stats.map((stat) => `
@@ -353,164 +375,199 @@
       `).join('');
     }
 
-    function renderBars(container, rows, tft = false) {
+    function renderBars(container, rows, { formatter = (row) => row.count, className = '' } = {}) {
       const max = Math.max(...rows.map((row) => row.count), 1);
       container.innerHTML = rows.map((row) => `
         <div class="bar-row">
           <div>${row.name}</div>
-          <div class="bar-track"><div class="bar-fill ${tft ? 'tft' : ''}" style="width:${(row.count / max) * 100}%"></div></div>
-          <div>${row.count}</div>
+          <div class="track"><div class="fill ${className}" style="width:${(row.count / max) * 100}%"></div></div>
+          <div>${formatter(row)}</div>
         </div>
       `).join('');
     }
 
-    function makeRadar(league) {
-      const avgDamage = league.matches.reduce((sum, match) => sum + match.damage, 0) / Math.max(1, league.matches.length);
-      const avgGold = league.matches.reduce((sum, match) => sum + match.gold, 0) / Math.max(1, league.matches.length);
-      const avgDuration = league.matches.reduce((sum, match) => sum + match.durationSeconds, 0) / Math.max(1, league.matches.length);
-      const metrics = [
-        Math.min(10, league.avgKdaRatio * 2.2),
-        Math.min(10, league.avgKp * 12),
-        Math.min(10, league.avgCs / 10),
-        Math.min(10, avgDamage / 4200),
-        Math.min(10, avgGold / 1700),
-        Math.min(10, league.winRate * 12 + (avgDuration > 1200 ? 0.8 : 0))
-      ];
-
-      radarChart?.destroy();
-      radarChart = new Chart(radarEl, {
-        type: 'radar',
-        data: {
-          labels: ['KDA', 'KP', 'CS', 'Damage', 'Gold', 'Win Conversion'],
-          datasets: [{
-            label: 'recent league sample',
-            data: metrics,
-            borderColor: '#ff7a59',
-            backgroundColor: 'rgba(255,122,89,0.20)',
-            pointBackgroundColor: '#ffd0c5',
-            pointRadius: 3
-          }]
-        },
-        options: {
-          maintainAspectRatio: false,
-          scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, color: '#93a0d9' }, grid: { color: '#2a3567' }, angleLines: { color: '#2a3567' }, pointLabels: { color: '#dfe5ff' } } },
-          plugins: { legend: { labels: { color: '#e9eeff' } } }
-        }
-      });
-    }
-
-    function makePlacements(tft) {
-      const bins = [1,2,3,4,5,6,7,8].map((place) => tft.matches.filter((match) => match.placement === place).length);
-      placementsChart?.destroy();
-      placementsChart = new Chart(placementsEl, {
-        type: 'bar',
-        data: {
-          labels: ['1st','2nd','3rd','4th','5th','6th','7th','8th'],
-          datasets: [{
-            label: 'placements',
-            data: bins,
-            borderRadius: 8,
-            backgroundColor: ['#6de0ff','#7fd7ff','#8cc9ff','#a2b9ff','#b88cff','#c57cff','#dd6db7','#ff7da3']
-          }]
-        },
-        options: {
-          maintainAspectRatio: false,
-          scales: {
-            x: { ticks: { color: '#ded5ff' }, grid: { display: false } },
-            y: { ticks: { color: '#bfb3eb', precision: 0 }, grid: { color: 'rgba(184,140,255,0.15)' } }
-          },
-          plugins: { legend: { display: false } }
-        }
-      });
-    }
-
-    function renderTeammates(league) {
-      byId('teammate-note').textContent = `top 10 from ${league.teammateSampleSize} recent matches together.`;
-      byId('league-teammates').innerHTML = league.topTeammates.map((entry, index) => `
-        <div class="teammate-row">
-          <div class="teammate-rank">${index + 1}</div>
-          <div class="teammate-main">
-            <div class="teammate-name" title="${entry.name}">${entry.name}</div>
-            <div class="teammate-meta">${entry.games} games together</div>
-          </div>
-          <div class="teammate-stats">
-            <div class="teammate-games teammate-meta">${entry.games} games</div>
-            <div class="teammate-record teammate-meta">${entry.record} W-L</div>
-            <div class="teammate-wr">
-              <div class="teammate-meta">${entry.winRateText} win rate</div>
-              <div class="bar-track"><div class="bar-fill teammate" style="width:${entry.winRate * 100}%"></div></div>
-            </div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function renderLeague(league) {
-      byId('league-sample-note').textContent = `${league.sampleSize} games`;
+    function renderRecent(league) {
+      byId('league-window').textContent = `${league.deepSampleSize} matches fetched • ${league.historyWindow.firstMatchAtText} → ${league.historyWindow.lastMatchAtText}`;
       renderStatGrid(byId('league-stats'), [
-        { label: 'Record', value: league.record, hint: pct(league.winRate) + ' win rate' },
-        { label: 'Avg KDA', value: fmt(league.avgKdaRatio, 2), hint: league.matches[0]?.kdaText ? `latest ${league.matches[0].kdaText}` : '' },
-        { label: 'Avg CS', value: fmt(league.avgCs, 1), hint: 'last 10 average' },
-        { label: 'Avg KP', value: pct(league.avgKp), hint: 'teamfight share' }
+        { label: 'Deep sample', value: `${league.deepSampleSize}`, hint: 'current Riot-visible history window' },
+        { label: 'Overall record', value: league.overall.record, hint: league.overall.winRateText + ' across the full window' },
+        { label: 'Recent 10', value: league.recent.record, hint: league.recent.winRateText + ' in the latest slice' },
+        { label: 'Avg KP', value: league.overall.avgKpText, hint: `overall KDA ${fmt(league.overall.avgKdaRatio, 2)}` }
       ]);
-
       byId('league-results').innerHTML = league.matches.map((match) => `
         <div class="result-box ${match.win ? 'win' : 'loss'}">
-          <div>${match.win ? 'W' : 'L'}</div>
+          <div><strong>${match.win ? 'W' : 'L'}</strong></div>
           <div>${match.champion}</div>
+          <div>${match.kdaText}</div>
         </div>
       `).join('');
-
       byId('league-champs').innerHTML = league.topChampions.map((entry) => `<div class="pill"><strong>${entry.name}</strong><span>${entry.count}x</span></div>`).join('');
       renderBars(byId('league-queues'), league.queueMix);
       byId('league-read').textContent = league.read;
-      renderTeammates(league);
-      makeRadar(league);
+    }
+
+    function renderTeammates(league) {
+      byId('teammate-note').textContent = `top 10 from the same ${league.teammateSampleSize}-match fetched window.`;
+      byId('league-teammates').innerHTML = league.topTeammates.map((entry) => `
+        <div class="row teammate-row">
+          <div>
+            <strong>${entry.name}</strong>
+            <div class="muted small">${entry.games} games together</div>
+          </div>
+          <div>${entry.games}g</div>
+          <div>${entry.record}</div>
+          <div>
+            <div class="muted small">${entry.winRateText} win rate</div>
+            <div class="track"><div class="fill good" style="width:${entry.winRate * 100}%"></div></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderIdentity(league) {
+      byId('mastery-note').textContent = `mastery source: ${league.championIdentity.masterySource}; ${league.championIdentity.masteryCoverage} mastery rows fetched.`;
+      byId('identity-table').innerHTML = league.championIdentity.truePool.map((row) => `
+        <div class="row identity-row">
+          <div>
+            <strong>${row.champion}</strong>
+            <div class="muted small">${row.record} • ${row.winRateText} • avg ${row.avgKills}/${row.avgDeaths}/${row.avgAssists}</div>
+          </div>
+          <div>${row.games}g</div>
+          <div>lvl ${row.masteryLevel}</div>
+          <div>${row.masteryPoints.toLocaleString()} pts</div>
+          <div>${fmt(row.avgKda, 2)} KDA</div>
+          <div>${fmt(row.poolWeight, 1)}</div>
+        </div>
+      `).join('');
+
+      const renderFallbackList = (containerId, rows, emptyText, positive = false) => {
+        const container = byId(containerId);
+        if (!rows.length) {
+          container.innerHTML = `<div class="empty">${emptyText}</div>`;
+          return;
+        }
+        container.innerHTML = rows.map((row) => `
+          <div class="row">
+            <div>
+              <strong>${row.champion}</strong>
+              <div class="muted small">${row.games} games • mastery ${row.masteryLevel}/${row.masteryPoints.toLocaleString()} • ${row.record}</div>
+            </div>
+            <div class="muted small">${positive ? 'outperforming comfort level' : 'results lagging familiarity'} • avg KDA ${fmt(row.avgKda, 2)}</div>
+          </div>
+        `).join('');
+      };
+
+      renderFallbackList('high-familiarity', league.championIdentity.highFamiliarityPoorResults, 'nothing strong enough to shame here yet lol.');
+      renderFallbackList('low-familiarity', league.championIdentity.lowFamiliarityStrongResults, 'no clear stealth pocket pick signal yet.', true);
+    }
+
+    function renderSignature(league) {
+      const signals = league.signaturePlay.signals || [];
+      byId('signature-note').textContent = league.signaturePlay.note;
+      if (!signals.length) {
+        byId('signature-signals').innerHTML = '<div class="empty">no metric cleared the confidence bar in this window yet.</div>';
+        return;
+      }
+      byId('signature-signals').innerHTML = signals.map((signal) => `
+        <div class="signal">
+          <div class="topline">
+            <strong>${signal.label}</strong>
+            <span class="score">${signal.avgPercentileText}</span>
+          </div>
+          <p class="read">${signal.description}</p>
+          <div class="section muted small">sample ${signal.sampleSize} • average ${signal.avgValueText} • ${signal.supportingGames} strong supporting games</div>
+        </div>
+      `).join('');
+    }
+
+    function renderPlaytime(league) {
+      const bands = league.playtimePersonality.bands || [];
+      const best = league.playtimePersonality.bestBand;
+      const worst = league.playtimePersonality.worstBand;
+      byId('playtime-bands').innerHTML = bands.map((band) => `
+        <div class="split ${band.label === best ? 'goodish' : band.label === worst ? 'badish' : ''}">
+          <strong>${band.label}</strong>
+          <div class="section">
+            <div>${band.record}</div>
+            <div class="muted small">${band.winRateText} • avg KDA ${fmt(band.avgKda, 2)}</div>
+            <div class="muted small">${band.games} games • avg KP ${band.avgKp}</div>
+          </div>
+        </div>
+      `).join('');
+      byId('playtime-read').textContent = league.playtimePersonality.read;
+    }
+
+    function renderWorstEnemies(league) {
+      const rows = league.worstEnemy.rows || [];
+      if (!rows.length) {
+        byId('worst-enemies').innerHTML = '<div class="empty">not enough repeat enemy data yet.</div>';
+      } else {
+        byId('worst-enemies').innerHTML = rows.map((row) => `
+          <div class="row enemy-row">
+            <div>
+              <strong>${row.champion}</strong>
+              <div class="muted small">${row.games} games faced • ${row.caution}</div>
+            </div>
+            <div>${row.losses}L</div>
+            <div>${row.lossRateText}</div>
+            <div>${fmt(row.avgKda, 2)} KDA</div>
+            <div class="muted small">avg deaths ${fmt(row.avgDeaths, 1)}</div>
+          </div>
+        `).join('');
+      }
+      byId('worst-enemy-note').textContent = league.worstEnemy.note;
+    }
+
+    function renderRecords(league) {
+      byId('records').innerHTML = league.records.rows.map((row) => `
+        <div class="row record-row">
+          <div>
+            <strong>${row.label}: ${row.value}</strong>
+            <div class="muted small">${row.champion} • ${row.queueName} • ${row.kdaText}</div>
+          </div>
+          <div class="muted small">${row.endedAtText}</div>
+        </div>
+      `).join('');
+      byId('records-note').textContent = league.records.note;
     }
 
     function renderTft(tft) {
       byId('tft-sub').textContent = tft.availableSampleSize >= tft.requestedSampleSize
         ? `using the last ${tft.requestedSampleSize} matches.`
         : `public source only exposed ${tft.availableSampleSize} recent matches right now, so this uses the full available sample.`;
-
       renderStatGrid(byId('tft-stats'), [
         { label: 'Sample', value: `${tft.availableSampleSize}`, hint: `target was ${tft.requestedSampleSize}` },
-        { label: 'Avg Place', value: fmt(tft.avgPlacement, 2), hint: pct(tft.top4Rate) + ' top 4 rate' },
-        { label: 'Wins', value: pct(tft.winRate), hint: '1st-place rate' },
-        { label: 'Main Queue', value: tft.mostFrequentQueue ? tft.mostFrequentQueue.name : 'n/a', hint: tft.mostFrequentQueue ? `${tft.mostFrequentQueue.count} games` : '' }
+        { label: 'Avg place', value: fmt(tft.avgPlacement, 2), hint: pct(tft.top4Rate) + ' top 4 rate' },
+        { label: 'Win rate', value: pct(tft.winRate), hint: '1st-place rate' },
+        { label: 'Main queue', value: tft.mostFrequentQueue ? tft.mostFrequentQueue.name : 'n/a', hint: tft.mostFrequentQueue ? `${tft.mostFrequentQueue.count} games` : '' }
       ]);
-
       byId('tft-comps').innerHTML = tft.topComps.map((entry, index) => `
-        <div>
-          <div style="font-weight:700">${index + 1}. ${entry.name || 'Mixed board'}</div>
-          <div class="muted-small">${entry.count} games</div>
+        <div class="row">
+          <div><strong>${index + 1}. ${entry.name || 'Mixed board'}</strong></div>
+          <div class="muted small">${entry.count} games</div>
         </div>
       `).join('');
-
       byId('tft-units').innerHTML = tft.topChampions.map((entry) => `<div class="pill"><strong>${entry.name}</strong><span>${entry.count}x</span></div>`).join('');
-
-      const queueCounts = tft.matches.reduce((map, match) => {
-        map.set(match.queueName, (map.get(match.queueName) || 0) + 1);
-        return map;
-      }, new Map());
-      renderBars(byId('tft-queues'), [...queueCounts.entries()].map(([name, count]) => ({ name, count })), true);
       byId('tft-read').textContent = tft.playstyleRead;
-      makePlacements(tft);
     }
 
     async function boot() {
       const response = await fetch('./data/chuah-data.json', { cache: 'no-store' });
       const data = await response.json();
       byId('updated-at').textContent = `refreshed ${new Date(data.generatedAt).toLocaleString()}`;
-      renderLeague(data.league);
+      renderRecent(data.league);
+      renderTeammates(data.league);
+      renderIdentity(data.league);
+      renderSignature(data.league);
+      renderPlaytime(data.league);
+      renderWorstEnemies(data.league);
+      renderRecords(data.league);
       renderTft(data.tft);
     }
 
     boot().catch((error) => {
       console.error(error);
       byId('updated-at').textContent = 'could not load snapshot data';
-      byId('league-stats').innerHTML = '<div class="empty">data load failed</div>';
-      byId('tft-stats').innerHTML = '<div class="empty">data load failed</div>';
     });
   </script>
 </body>

@@ -1,14 +1,14 @@
 # Chuah app data refresh
 
-Generated: 2026-03-09T00:33:35.599Z
+Generated: 2026-03-09T00:59:57.034Z
 
-## League last 10
-- Record: 4-6 (40.0%)
-- Avg KDA ratio: 3.02
-- Avg CS: 53.4
-- Avg KP: 70.6%
-- Teammate leaderboard sample: 80 recent matches
-- Top teammate: xyzipper#NA1 (47 games, 24-23)
+## League deep sample
+- Riot-visible history window fetched: 256 matches
+- Window: Mar 19, 2024, 10:46 PM → Feb 26, 2026, 12:14 AM
+- Overall record: 134-122 (52.3%)
+- Recent 10: 4-6 (40.0%)
+- Signature play callouts: damage share gravity (55.3%); damage throughput (54.2%); objective theft pressure (n/a)
+- Worst enemy read: Jayce (66.7% loss rate over 6 games)
 
 ## TFT public sample
 - Requested: 30
