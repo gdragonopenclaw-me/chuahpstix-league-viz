@@ -4,16 +4,18 @@ import path from 'node:path';
 const ROOT = path.resolve('/Users/gdragon/.openclaw/workspace/chuahpstix-league-viz');
 const DATA_DIR = path.join(ROOT, 'data');
 const OUT_DIR = path.join(ROOT, 'out');
+const CACHE_DIR = path.join(DATA_DIR, 'cache');
 const RIOT_KEY_PATH = path.join(process.env.HOME || '', '.openclaw', 'secrets', 'riot_api_key');
 
-const LEAGUE_ACCOUNT = { gameName: 'chuahpstix', tagLine: 'NA1' };
-const LEAGUE_RECENT_COUNT = 10;
-const LEAGUE_HISTORY_TARGET = 300;
-const LEAGUE_HISTORY_PAGE = 100;
-const LEAGUE_TEAMMATE_TOP = 10;
-const TACTICS_TOOLS_URL = 'https://tactics.tools/player/na/chuahpstix/NA1';
-const TFT_TARGET_COUNT = 30;
+const ROOT_PLAYERS = ['chuahpstix#NA1', 'lintaho#NA1'];
+const RECENT_MATCH_COUNT = 10;
+const HISTORY_TARGET_ROOT = 220;
+const HISTORY_TARGET_ALLOWED = 140;
+const HISTORY_PAGE = 100;
+const TEAMMATE_TOP = 10;
+const DYNAMIC_TOP = 5;
 const LOCAL_TIMEZONE = 'America/New_York';
+const DATA_VERSION = 2;
 
 const queueLabels = {
   400: 'Normal Draft',
@@ -32,7 +34,7 @@ function fmtPct(value, digits = 1) {
 }
 
 function num(value, digits = 1) {
-  return Number(value.toFixed(digits));
+  return Number((value || 0).toFixed(digits));
 }
 
 function avg(values) {
@@ -44,6 +46,10 @@ function median(values) {
   const sorted = [...values].sort((a, b) => a - b);
   const mid = Math.floor(sorted.length / 2);
   return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+function safeDiv(numerator, denominator) {
+  return denominator ? numerator / denominator : 0;
 }
 
 function topEntries(counter, top = 5) {
@@ -63,6 +69,55 @@ function queueName(queueId) {
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function ensureDir(dir) {
+  await fs.mkdir(dir, { recursive: true });
+}
+
+function canonicalRiotId(value) {
+  return String(value || '').trim().toLowerCase();
+}
+
+function parseRiotId(value) {
+  const raw = String(value || '').trim();
+  const hash = raw.lastIndexOf('#');
+  if (hash <= 0) throw new Error(`Invalid Riot ID: ${value}`);
+  return { gameName: raw.slice(0, hash), tagLine: raw.slice(hash + 1) };
+}
+
+function makeRiotId(gameName, tagLine) {
+  return `${gameName}#${tagLine}`;
+}
+
+function cachePath(...parts) {
+  return path.join(CACHE_DIR, ...parts);
+}
+
+function sanitizeFilePart(value) {
+  return String(value).replace(/[^a-zA-Z0-9._-]+/g, '_');
+}
+
+async function readJsonIfExists(file) {
+  try {
+    return JSON.parse(await fs.readFile(file, 'utf8'));
+  } catch (error) {
+    if (error.code === 'ENOENT') return null;
+    throw error;
+  }
+}
+
+async function writeJson(file, value) {
+  await ensureDir(path.dirname(file));
+  await fs.writeFile(file, JSON.stringify(value, null, 2));
+}
+
+async function cacheJson(file, producer) {
+  const cached = await readJsonIfExists(file);
+  if (cached !== null) return cached;
+  const fresh = await producer();
+  await writeJson(file, fresh);
+  return fresh;
 }
 
 async function riotGet(url, key, attempt = 0) {
@@ -86,6 +141,67 @@ async function riotGet(url, key, attempt = 0) {
   return response.json();
 }
 
+async function fetchChampionData() {
+  return cacheJson(cachePath('ddragon', 'champions.json'), async () => {
+    const versions = await fetch('https://ddragon.leagueoflegends.com/api/versions.json', {
+      headers: { 'User-Agent': 'Mozilla/5.0 OpenClaw/1.0' }
+    }).then((response) => response.json());
+    const version = versions[0];
+    const payload = await fetch(`https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`, {
+      headers: { 'User-Agent': 'Mozilla/5.0 OpenClaw/1.0' }
+    }).then((response) => response.json());
+
+    const champions = Object.values(payload.data).map((champion) => ({
+      id: champion.id,
+      key: Number(champion.key),
+      name: champion.name,
+      title: champion.title,
+      tags: champion.tags || [],
+      partype: champion.partype || null,
+      info: champion.info || {}
+    }));
+
+    return { version, champions };
+  });
+}
+
+function buildChampionLookup(championData) {
+  const byId = new Map();
+  const byName = new Map();
+  for (const champion of championData.champions) {
+    byId.set(champion.key, champion);
+    byName.set(champion.name, champion);
+  }
+  return { byId, byName, version: championData.version };
+}
+
+function deriveSubclass(tags) {
+  if (tags[1]) return tags[1];
+  const primary = tags[0] || 'Unknown';
+  const fallback = {
+    Assassin: 'Burst',
+    Fighter: 'Skirmish',
+    Mage: 'Spellcast',
+    Marksman: 'Carry',
+    Support: 'Utility',
+    Tank: 'Frontline'
+  };
+  return fallback[primary] || 'Generalist';
+}
+
+function championTagProfile(championLookup, championName) {
+  const champion = championLookup.byName.get(championName);
+  const tags = champion?.tags?.length ? champion.tags : ['Unknown'];
+  const primary = tags[0] || 'Unknown';
+  const subclass = deriveSubclass(tags);
+  return {
+    tags,
+    primaryClass: primary,
+    subclass,
+    classProfile: `${primary} / ${subclass}`
+  };
+}
+
 function participantDisplayName(participant) {
   if (participant.riotIdGameName && participant.riotIdTagline) {
     return `${participant.riotIdGameName}#${participant.riotIdTagline}`;
@@ -102,10 +218,6 @@ function percentileRank(values, value) {
   const lower = values.filter((entry) => entry < value).length;
   const equal = values.filter((entry) => entry === value).length;
   return (lower + Math.max(0, equal - 1) / 2) / Math.max(1, values.length - 1);
-}
-
-function safeDiv(numerator, denominator) {
-  return denominator ? numerator / denominator : 0;
 }
 
 function formatDateTime(timestamp) {
@@ -146,66 +258,98 @@ function recordSummary(matches) {
   };
 }
 
-async function fetchChampionData() {
-  const versions = await fetch('https://ddragon.leagueoflegends.com/api/versions.json', {
-    headers: { 'User-Agent': 'Mozilla/5.0 OpenClaw/1.0' }
-  }).then((response) => response.json());
-  const version = versions[0];
-  const payload = await fetch(`https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`, {
-    headers: { 'User-Agent': 'Mozilla/5.0 OpenClaw/1.0' }
-  }).then((response) => response.json());
-
-  const byId = new Map();
-  for (const champion of Object.values(payload.data)) {
-    byId.set(Number(champion.key), champion.name);
-  }
-
-  return { version, byId };
+async function fetchAccountByRiotId(riotId, key) {
+  const { gameName, tagLine } = parseRiotId(riotId);
+  const file = cachePath('riot', 'accounts', `${sanitizeFilePart(canonicalRiotId(riotId))}.json`);
+  return cacheJson(file, () => riotGet(
+    `https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(gameName)}/${encodeURIComponent(tagLine)}`,
+    key
+  ));
 }
 
-async function fetchLeague(key) {
-  const account = await riotGet(
-    `https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(LEAGUE_ACCOUNT.gameName)}/${encodeURIComponent(LEAGUE_ACCOUNT.tagLine)}`,
-    key
-  );
-  const summoner = await riotGet(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${account.puuid}`, key);
-  const championData = await fetchChampionData();
-  const masteryRaw = await riotGet(`https://na1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${account.puuid}`, key);
+async function fetchSummonerByPuuid(puuid, key) {
+  const file = cachePath('riot', 'summoners', `${sanitizeFilePart(puuid)}.json`);
+  return cacheJson(file, () => riotGet(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`, key));
+}
+
+async function fetchMasteryByPuuid(puuid, key) {
+  const file = cachePath('riot', 'mastery', `${sanitizeFilePart(puuid)}.json`);
+  return cacheJson(file, () => riotGet(`https://na1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}`, key));
+}
+
+async function fetchMatchIds(puuid, targetCount, key) {
+  const file = cachePath('riot', 'match-ids', `${sanitizeFilePart(puuid)}-${targetCount}.json`);
+  return cacheJson(file, async () => {
+    const matchIds = [];
+    for (let start = 0; start < targetCount; start += HISTORY_PAGE) {
+      const batch = await riotGet(
+        `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${Math.min(HISTORY_PAGE, targetCount - start)}`,
+        key
+      );
+      matchIds.push(...batch);
+      if (batch.length < HISTORY_PAGE) break;
+      await sleep(1200);
+    }
+    return matchIds;
+  });
+}
+
+async function fetchMatch(matchId, key) {
+  const file = cachePath('riot', 'matches', `${sanitizeFilePart(matchId)}.json`);
+  return cacheJson(file, async () => {
+    const payload = await riotGet(`https://americas.api.riotgames.com/lol/match/v5/matches/${matchId}`, key);
+    await sleep(90);
+    return payload;
+  });
+}
+
+async function fetchPlayerBundle(riotId, targetCount, key) {
+  const account = await fetchAccountByRiotId(riotId, key);
+  const [summoner, masteryRaw, matchIds] = await Promise.all([
+    fetchSummonerByPuuid(account.puuid, key),
+    fetchMasteryByPuuid(account.puuid, key),
+    fetchMatchIds(account.puuid, targetCount, key)
+  ]);
+
+  const rawMatches = [];
+  for (const matchId of matchIds) {
+    try {
+      const match = await fetchMatch(matchId, key);
+      rawMatches.push(match);
+    } catch (error) {
+      console.error(`Skipping ${matchId} for ${riotId}: ${error.message}`);
+    }
+  }
+
+  return { account, summoner, masteryRaw, rawMatches };
+}
+
+function summarizePlayer({ riotId, account, summoner, masteryRaw, rawMatches, championLookup, allowedPlayerMap }) {
   const masteryByName = new Map(
-    masteryRaw.map((entry) => [
-      championData.byId.get(entry.championId) || `Champion ${entry.championId}`,
-      {
+    masteryRaw.map((entry) => {
+      const champion = championLookup.byId.get(entry.championId)?.name || `Champion ${entry.championId}`;
+      return [champion, {
         championId: entry.championId,
         championLevel: entry.championLevel,
         championPoints: entry.championPoints,
         lastPlayTime: entry.lastPlayTime
-      }
-    ])
+      }];
+    })
   );
-
-  const matchIds = [];
-  for (let start = 0; start < LEAGUE_HISTORY_TARGET; start += LEAGUE_HISTORY_PAGE) {
-    const batch = await riotGet(
-      `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${account.puuid}/ids?start=${start}&count=${LEAGUE_HISTORY_PAGE}`,
-      key
-    );
-    matchIds.push(...batch);
-    if (batch.length < LEAGUE_HISTORY_PAGE) break;
-    await sleep(1200);
-  }
 
   const matches = [];
   const teammateCounter = new Map();
-  for (const [index, matchId] of matchIds.entries()) {
-    const raw = await riotGet(`https://americas.api.riotgames.com/lol/match/v5/matches/${matchId}`, key);
-    if (!raw?.info?.participants?.length) continue;
+  const roleCounter = new Map();
 
+  for (const [index, raw] of rawMatches.entries()) {
+    if (!raw?.info?.participants?.length) continue;
     const me = raw.info.participants.find((participant) => participant.puuid === account.puuid);
     if (!me) continue;
 
     const team = raw.info.participants.filter((participant) => participant.teamId === me.teamId);
     const enemies = raw.info.participants.filter((participant) => participant.teamId !== me.teamId);
     const teammates = team.filter((participant) => participant.puuid !== me.puuid);
+
     for (const teammate of teammates) {
       const name = participantDisplayName(teammate);
       const row = teammateCounter.get(name) || { name, games: 0, wins: 0, losses: 0 };
@@ -214,6 +358,7 @@ async function fetchLeague(key) {
       else row.losses += 1;
       teammateCounter.set(name, row);
     }
+
     const challenges = getChallenges(me);
     const cs = (me.totalMinionsKilled || 0) + (me.neutralMinionsKilled || 0);
     const teamKills = Math.max(1, team.reduce((sum, participant) => sum + participant.kills, 0));
@@ -231,14 +376,15 @@ async function fetchLeague(key) {
       teamDamage: raw.info.participants.map((participant) => getChallenges(participant).teamDamagePercentage).filter((value) => Number.isFinite(value)),
       early: raw.info.participants.map((participant) => getChallenges(participant).takedownsFirstXMinutes).filter((value) => Number.isFinite(value)),
       vision: raw.info.participants.map((participant) => getChallenges(participant).visionScorePerMinute).filter((value) => Number.isFinite(value)),
-      cc: raw.info.participants.map((participant) => getChallenges(participant).enemyChampionImmobilizations).filter((value) => Number.isFinite(value)),
-      skillshots: raw.info.participants.map((participant) => getChallenges(participant).skillshotsDodged).filter((value) => Number.isFinite(value)),
-      steals: raw.info.participants.map((participant) => getChallenges(participant).epicMonsterSteals).filter((value) => Number.isFinite(value))
+      cc: raw.info.participants.map((participant) => getChallenges(participant).enemyChampionImmobilizations).filter((value) => Number.isFinite(value))
     };
 
+    const participantRiotIds = team
+      .filter((participant) => participant.riotIdGameName && participant.riotIdTagline)
+      .map((participant) => makeRiotId(participant.riotIdGameName, participant.riotIdTagline));
+
     matches.push({
-      id: matchId,
-      index,
+      id: raw.metadata?.matchId || `match-${index}`,
       champion: me.championName,
       championId: me.championId,
       queueId: raw.info.queueId,
@@ -249,15 +395,13 @@ async function fetchLeague(key) {
       deaths: me.deaths,
       assists: me.assists,
       kdaRatio: safeDiv(me.kills + me.assists, Math.max(1, me.deaths)),
+      kdaText: `${me.kills}/${me.deaths}/${me.assists}`,
       cs,
       damage: me.totalDamageDealtToChampions,
       damageTaken: me.totalDamageTaken,
       damageMitigated: me.damageSelfMitigated,
       gold: me.goldEarned,
       visionScore: me.visionScore,
-      wardsPlaced: me.wardsPlaced,
-      wardsKilled: me.wardsKilled,
-      durationSeconds: raw.info.gameDuration,
       durationMinutes,
       endedAt: timestamp,
       endedAtText: formatDateTime(timestamp),
@@ -265,18 +409,14 @@ async function fetchLeague(key) {
       timeBand: timeBandLabel(hour),
       role: me.teamPosition || me.individualPosition || 'Unknown',
       teamKills,
+      teamRiotIds: participantRiotIds,
       teamDamageShare: challenges.teamDamagePercentage ?? safeDiv(me.totalDamageDealtToChampions, Math.max(1, team.reduce((sum, participant) => sum + participant.totalDamageDealtToChampions, 0))),
       kp: challenges.killParticipation ?? safeDiv(me.kills + me.assists, teamKills),
       dpm: challenges.damagePerMinute ?? safeDiv(me.totalDamageDealtToChampions, durationMinutes),
       visionPerMinute: challenges.visionScorePerMinute ?? safeDiv(me.visionScore, durationMinutes),
-      takedownsFirstXMinutes: challenges.takedownsFirstXMinutes ?? null,
       earlyTakedowns: challenges.takedownsFirstXMinutes ?? null,
       ccScore: challenges.enemyChampionImmobilizations ?? null,
-      skillshotsDodged: challenges.skillshotsDodged ?? null,
-      skillshotsHit: challenges.skillshotsHit ?? null,
       soloKills: challenges.soloKills ?? 0,
-      quickSoloKills: challenges.quickSoloKills ?? 0,
-      multikills: challenges.multikills ?? 0,
       objectiveSteals: me.objectivesStolen ?? 0,
       epicMonsterSteals: challenges.epicMonsterSteals ?? 0,
       enemyChampion,
@@ -286,17 +426,14 @@ async function fetchLeague(key) {
         teamDamage: percentileRank(metricValues.teamDamage, challenges.teamDamagePercentage ?? 0),
         early: percentileRank(metricValues.early, challenges.takedownsFirstXMinutes ?? 0),
         vision: percentileRank(metricValues.vision, challenges.visionScorePerMinute ?? safeDiv(me.visionScore, durationMinutes)),
-        cc: percentileRank(metricValues.cc, challenges.enemyChampionImmobilizations ?? 0),
-        skillshots: percentileRank(metricValues.skillshots, challenges.skillshotsDodged ?? 0),
-        steals: percentileRank(metricValues.steals, challenges.epicMonsterSteals ?? 0)
-      },
-      kdaText: `${me.kills}/${me.deaths}/${me.assists}`
+        cc: percentileRank(metricValues.cc, challenges.enemyChampionImmobilizations ?? 0)
+      }
     });
 
-    await sleep(90);
+    roleCounter.set(me.teamPosition || me.individualPosition || 'Unknown', (roleCounter.get(me.teamPosition || me.individualPosition || 'Unknown') || 0) + 1);
   }
 
-  const recentMatches = matches.slice(0, LEAGUE_RECENT_COUNT);
+  const recentMatches = matches.slice(0, RECENT_MATCH_COUNT);
   const overall = recordSummary(matches);
   const recent = recordSummary(recentMatches);
   const queueCounter = new Map();
@@ -357,7 +494,7 @@ async function fetchLeague(key) {
   }
 
   for (const raw of masteryRaw) {
-    const champion = championData.byId.get(raw.championId) || `Champion ${raw.championId}`;
+    const champion = championLookup.byId.get(raw.championId)?.name || `Champion ${raw.championId}`;
     if (!championRows.has(champion)) {
       championRows.set(champion, {
         champion,
@@ -379,11 +516,12 @@ async function fetchLeague(key) {
   const maxMastery = Math.max(...masteryPoints, 1);
   const maxGames = Math.max(...[...championRows.values()].map((entry) => entry.games), 1);
 
-  const championIdentity = [...championRows.values()]
+  const championIdentityRows = [...championRows.values()]
     .map((entry) => {
       const mastery = masteryByName.get(entry.champion) || null;
       const familiarityScore = (entry.games / maxGames) * 0.55 + ((mastery?.championPoints || 0) / maxMastery) * 0.45;
       const winRate = safeDiv(entry.wins, Math.max(1, entry.games));
+      const classInfo = championTagProfile(championLookup, entry.champion);
       return {
         champion: entry.champion,
         games: entry.games,
@@ -398,28 +536,79 @@ async function fetchLeague(key) {
         avgKda: num(avg(entry.kdaRatios), 2),
         avgDamage: num(avg(entry.damage), 0),
         avgCs: num(avg(entry.cs), 1),
-        avgKp: safeDiv(avg(entry.kp), 1),
+        avgKp: avg(entry.kp),
         lastPlayedAt: entry.lastPlayedAt,
         lastPlayedAtText: entry.lastPlayedAt ? formatDateTime(entry.lastPlayedAt) : null,
         masteryLevel: mastery?.championLevel || 0,
         masteryPoints: mastery?.championPoints || 0,
         familiarityScore,
-        poolWeight: num(familiarityScore * 100, 1)
+        poolWeight: num(familiarityScore * 100, 1),
+        ...classInfo
       };
     })
     .sort((a, b) => b.familiarityScore - a.familiarityScore || b.games - a.games || a.champion.localeCompare(b.champion));
 
-  const truePool = championIdentity.filter((entry) => entry.games > 0).slice(0, 6);
-  const highFamiliarityPoorResults = championIdentity
+  const truePool = championIdentityRows.filter((entry) => entry.games > 0).slice(0, 8);
+  const highFamiliarityPoorResults = championIdentityRows
     .filter((entry) => entry.games >= 2 && entry.masteryPoints > 0)
     .filter((entry) => entry.familiarityScore >= 0.35 && entry.winRate <= overall.winRate - 0.08)
     .sort((a, b) => (a.winRate - b.winRate) || (b.masteryPoints - a.masteryPoints))
-    .slice(0, 3);
-  const lowFamiliarityStrongResults = championIdentity
+    .slice(0, 4);
+  const lowFamiliarityStrongResults = championIdentityRows
     .filter((entry) => entry.games >= 2)
     .filter((entry) => entry.familiarityScore <= 0.3 && entry.winRate >= overall.winRate + 0.1)
     .sort((a, b) => (b.winRate - a.winRate) || (a.masteryPoints - b.masteryPoints))
-    .slice(0, 3);
+    .slice(0, 4);
+
+  const groupByClassProfile = new Map();
+  const groupByPrimaryClass = new Map();
+  for (const row of championIdentityRows.filter((entry) => entry.games > 0)) {
+    const classRow = groupByClassProfile.get(row.classProfile) || { label: row.classProfile, games: 0, wins: 0, familiaritySum: 0, champions: [] };
+    classRow.games += row.games;
+    classRow.wins += row.wins;
+    classRow.familiaritySum += row.familiarityScore * row.games;
+    classRow.champions.push(row.champion);
+    groupByClassProfile.set(row.classProfile, classRow);
+
+    const primaryRow = groupByPrimaryClass.get(row.primaryClass) || { label: row.primaryClass, games: 0, wins: 0, familiaritySum: 0, champions: [] };
+    primaryRow.games += row.games;
+    primaryRow.wins += row.wins;
+    primaryRow.familiaritySum += row.familiarityScore * row.games;
+    primaryRow.champions.push(row.champion);
+    groupByPrimaryClass.set(row.primaryClass, primaryRow);
+  }
+
+  const classRows = [...groupByClassProfile.values()]
+    .map((entry) => ({
+      ...entry,
+      winRate: safeDiv(entry.wins, entry.games),
+      winRateText: fmtPct(safeDiv(entry.wins, entry.games)),
+      avgFamiliarity: safeDiv(entry.familiaritySum, entry.games),
+      comfortText: fmtPct(safeDiv(entry.familiaritySum, entry.games)),
+      championList: entry.champions.sort().join(', ')
+    }))
+    .sort((a, b) => b.games - a.games || b.winRate - a.winRate)
+    .slice(0, 8);
+
+  const primaryClassRows = [...groupByPrimaryClass.values()]
+    .map((entry) => ({
+      ...entry,
+      winRate: safeDiv(entry.wins, entry.games),
+      winRateText: fmtPct(safeDiv(entry.wins, entry.games)),
+      avgFamiliarity: safeDiv(entry.familiaritySum, entry.games),
+      comfortText: fmtPct(safeDiv(entry.familiaritySum, entry.games)),
+      championList: entry.champions.sort().join(', ')
+    }))
+    .sort((a, b) => b.games - a.games || b.winRate - a.winRate);
+
+  const comfortLeader = [...classRows].filter((entry) => entry.games >= 4).sort((a, b) => b.avgFamiliarity - a.avgFamiliarity || b.games - a.games)[0] || null;
+  const successLeader = [...classRows].filter((entry) => entry.games >= 4).sort((a, b) => b.winRate - a.winRate || b.games - a.games)[0] || null;
+  let classRead = 'class-level reads are still thin, so this mostly works as descriptive context rather than hard truth.';
+  if (comfortLeader && successLeader) {
+    classRead = comfortLeader.label === successLeader.label
+      ? `${comfortLeader.label} is both the comfort home and one of the cleaner result buckets in this sample.`
+      : `${comfortLeader.label} looks like the comfort lane, while ${successLeader.label} has been converting the best results.`;
+  }
 
   const signalDefs = [
     {
@@ -550,16 +739,18 @@ async function fetchLeague(key) {
     .sort((a, b) => b.score - a.score || b.games - a.games)
     .slice(0, 5);
 
-  const records = [
-    { key: 'kills', label: 'highest kills', better: 'max' },
-    { key: 'assists', label: 'highest assists', better: 'max' },
-    { key: 'deaths', label: 'most deaths', better: 'max' },
-    { key: 'damage', label: 'highest damage', better: 'max' },
-    { key: 'cs', label: 'highest CS', better: 'max' },
-    { key: 'kp', label: 'highest kill participation', better: 'max' },
-    { key: 'kdaRatio', label: 'best KDA', better: 'max' },
-    { key: 'visionPerMinute', label: 'best vision/min', better: 'max' }
-  ].map((definition) => {
+  const recordDefs = [
+    { key: 'kills', label: 'highest kills' },
+    { key: 'assists', label: 'highest assists' },
+    { key: 'deaths', label: 'most deaths' },
+    { key: 'damage', label: 'highest damage' },
+    { key: 'cs', label: 'highest CS' },
+    { key: 'kp', label: 'highest kill participation' },
+    { key: 'kdaRatio', label: 'best KDA' },
+    { key: 'visionPerMinute', label: 'best vision/min' }
+  ];
+
+  const records = recordDefs.map((definition) => {
     const match = [...matches].sort((a, b) => b[definition.key] - a[definition.key])[0];
     const value = definition.key === 'kp'
       ? fmtPct(match.kp)
@@ -581,20 +772,113 @@ async function fetchLeague(key) {
 
   const topTeammates = [...teammateCounter.values()]
     .sort((a, b) => b.games - a.games || b.wins - a.wins || a.name.localeCompare(b.name))
-    .slice(0, LEAGUE_TEAMMATE_TOP)
-    .map((entry) => ({
-      ...entry,
-      record: `${entry.wins}-${entry.losses}`,
-      winRate: entry.wins / Math.max(1, entry.games),
-      winRateText: fmtPct(entry.wins / Math.max(1, entry.games), 0)
-    }));
+    .slice(0, TEAMMATE_TOP)
+    .map((entry) => {
+      const canonical = canonicalRiotId(entry.name);
+      const switchTarget = allowedPlayerMap[canonical] || null;
+      return {
+        ...entry,
+        record: `${entry.wins}-${entry.losses}`,
+        winRate: entry.wins / Math.max(1, entry.games),
+        winRateText: fmtPct(entry.wins / Math.max(1, entry.games), 0),
+        canonical,
+        switchable: Boolean(switchTarget),
+        switchTargetKey: switchTarget?.key || null,
+        switchTargetLabel: switchTarget?.riotId || null
+      };
+    });
 
-  const roleCounter = new Map();
-  const firstSeen = matches[matches.length - 1]?.endedAt || matches[0]?.endedAt || Date.now();
+  const topTeammateSet = new Set(topTeammates.map((entry) => canonicalRiotId(entry.name)));
+  const synergyBuckets = new Map();
+  for (let i = 0; i <= 4; i += 1) synergyBuckets.set(i, { count: i, games: 0, wins: 0 });
   for (const match of matches) {
-    roleCounter.set(match.role, (roleCounter.get(match.role) || 0) + 1);
+    const partnerCount = match.teamRiotIds
+      .filter((riotIdValue) => canonicalRiotId(riotIdValue) !== canonicalRiotId(riotId))
+      .filter((riotIdValue) => topTeammateSet.has(canonicalRiotId(riotIdValue))).length;
+    const bucket = synergyBuckets.get(Math.max(0, Math.min(4, partnerCount)));
+    bucket.games += 1;
+    bucket.wins += match.win ? 1 : 0;
+  }
+  const synergyRows = [...synergyBuckets.values()].map((entry) => ({
+    ...entry,
+    losses: entry.games - entry.wins,
+    record: winLossText(entry.wins, entry.games),
+    winRate: safeDiv(entry.wins, entry.games),
+    winRateText: fmtPct(safeDiv(entry.wins, entry.games)),
+    label: entry.count === 0 ? '0 top-10 friends' : `${entry.count} top-10 friend${entry.count === 1 ? '' : 's'}`
+  }));
+  const soloish = synergyRows.find((entry) => entry.count === 0);
+  const stacked = synergyRows.filter((entry) => entry.count >= 2).reduce((acc, entry) => ({ games: acc.games + entry.games, wins: acc.wins + entry.wins }), { games: 0, wins: 0 });
+  const stackedWinRate = safeDiv(stacked.wins, stacked.games);
+  let synergyRead = 'the premade split is mostly descriptive here, not enough to call a giant performance gap.';
+  if ((soloish?.games || 0) >= 5 && stacked.games >= 5 && Math.abs((soloish?.winRate || 0) - stackedWinRate) >= 0.08) {
+    synergyRead = stackedWinRate > (soloish?.winRate || 0)
+      ? `this sample runs cleaner with a real stack: ${fmtPct(stackedWinRate)} when 2+ top-10 friends show up, versus ${soloish?.winRateText || '0.0%'} in the solo-ish bucket.`
+      : `the solo-ish bucket is weirdly steadier here: ${soloish?.winRateText || '0.0%'} without top-10 friends, versus ${fmtPct(stackedWinRate)} with 2+ of them around.`;
   }
 
+  const radarDefs = [
+    ['teamfight glue', 'kp'],
+    ['damage share', 'teamDamage'],
+    ['damage/min', 'dpm'],
+    ['vision', 'vision'],
+    ['setup cc', 'cc'],
+    ['early fights', 'early']
+  ];
+  const radarAxes = radarDefs.map(([label, key]) => {
+    const relevant = matches.map((match) => match.percentiles[key]).filter((value) => Number.isFinite(value));
+    const value = avg(relevant);
+    return {
+      label,
+      key,
+      value,
+      score: Math.round(value * 100)
+    };
+  });
+
+  const networkNodeIds = [canonicalRiotId(riotId), ...topTeammates.map((entry) => canonicalRiotId(entry.name))];
+  const networkNodeSet = new Set(networkNodeIds);
+  const nodeMeta = new Map();
+  nodeMeta.set(canonicalRiotId(riotId), { id: canonicalRiotId(riotId), label: riotId, root: true, games: matches.length, winRate: overall.winRate });
+  for (const teammate of topTeammates) {
+    nodeMeta.set(canonicalRiotId(teammate.name), { id: canonicalRiotId(teammate.name), label: teammate.name, root: false, games: teammate.games, winRate: teammate.winRate });
+  }
+  const edgeMap = new Map();
+  for (const match of matches) {
+    const participants = [...new Set(match.teamRiotIds.map(canonicalRiotId).filter((id) => networkNodeSet.has(id)))];
+    for (let i = 0; i < participants.length; i += 1) {
+      for (let j = i + 1; j < participants.length; j += 1) {
+        const a = participants[i];
+        const b = participants[j];
+        const key = [a, b].sort().join('::');
+        const edge = edgeMap.get(key) || { source: a, target: b, games: 0, wins: 0 };
+        edge.games += 1;
+        edge.wins += match.win ? 1 : 0;
+        edgeMap.set(key, edge);
+      }
+    }
+  }
+  const networkEdges = [...edgeMap.values()]
+    .map((edge) => ({ ...edge, winRate: safeDiv(edge.wins, edge.games), winRateText: fmtPct(safeDiv(edge.wins, edge.games)) }))
+    .sort((a, b) => b.games - a.games || a.source.localeCompare(b.source) || a.target.localeCompare(b.target));
+  const maxEdgeGames = Math.max(...networkEdges.map((edge) => edge.games), 1);
+
+  const nodes = [...nodeMeta.values()].sort((a, b) => (b.root - a.root) || b.games - a.games || a.label.localeCompare(b.label));
+  const ring = nodes.slice(1);
+  const networkNodes = nodes.map((node, index) => {
+    if (node.root) return { ...node, x: 0.5, y: 0.5, radius: 18 };
+    const ringIndex = ring.findIndex((entry) => entry.id === node.id);
+    const angle = (Math.PI * 2 * ringIndex) / Math.max(1, ring.length) - Math.PI / 2;
+    const radiusNorm = 0.33 + ((ringIndex % 2) * 0.06);
+    return {
+      ...node,
+      x: num(0.5 + Math.cos(angle) * radiusNorm, 4),
+      y: num(0.5 + Math.sin(angle) * radiusNorm, 4),
+      radius: 11 + Math.round((node.games / Math.max(...ring.map((entry) => entry.games), 1)) * 9)
+    };
+  });
+
+  const firstSeen = matches[matches.length - 1]?.endedAt || matches[0]?.endedAt || Date.now();
   let quickRead = `fetched ${matches.length} League matches in the current Riot-visible window, from ${formatDateTime(firstSeen)} through ${formatDateTime(matches[0]?.endedAt || Date.now())}. `;
   if ((queueCounter.get('ARAM') || 0) / Math.max(1, matches.length) >= 0.75) {
     quickRead += 'This is overwhelmingly an ARAM-heavy sample, so the identity read is about fight patterns and champion comfort more than lane-phase macro.';
@@ -603,7 +887,15 @@ async function fetchLeague(key) {
   }
 
   return {
-    account,
+    profile: {
+      displayName: parseRiotId(riotId).gameName,
+      tagline: parseRiotId(riotId).tagLine,
+      riotId,
+      canonicalKey: canonicalRiotId(riotId)
+    },
+    account: {
+      puuid: account.puuid
+    },
     summoner: { id: summoner.id, accountId: summoner.accountId, puuid: summoner.puuid, summonerLevel: summoner.summonerLevel },
     sampleSize: matches.length,
     deepSampleSize: matches.length,
@@ -640,13 +932,31 @@ async function fetchLeague(key) {
       truePool,
       highFamiliarityPoorResults,
       lowFamiliarityStrongResults,
-      rows: championIdentity.filter((entry) => entry.games > 0).slice(0, 12),
+      rows: championIdentityRows.filter((entry) => entry.games > 0).slice(0, 12),
       masteryCoverage: masteryRaw.length,
-      masterySource: 'Riot champion-mastery-v4'
+      masterySource: 'Riot champion-mastery-v4 + Data Dragon tags',
+      classRows,
+      primaryClassRows,
+      classRead,
+      comfortLeader: comfortLeader?.label || null,
+      successLeader: successLeader?.label || null
     },
     signaturePlay: {
       signals: signatureSignals,
-      note: 'signals are only surfaced when the match payload exposes the metric and the sample is big enough to compare against actual lobby peers.'
+      note: 'signals are only surfaced when the match payload exposes the metric and the sample is big enough to compare against actual lobby peers.',
+      radar: {
+        note: 'radar axes are average within-lobby percentiles, scaled 0-100.',
+        axes: radarAxes
+      }
+    },
+    premadeSynergy: {
+      rows: synergyRows,
+      note: 'counts refer to how many of the player’s current top-10 teammates also appeared on the same team in that match.',
+      read: synergyRead,
+      soloishGames: soloish?.games || 0,
+      stackedGames: stacked.games,
+      stackedWinRate,
+      stackedWinRateText: fmtPct(stackedWinRate)
     },
     playtimePersonality: {
       bands: playtimeBands,
@@ -663,6 +973,12 @@ async function fetchLeague(key) {
       rows: records
     },
     teammateSampleSize: matches.length,
+    network: {
+      note: 'node map includes the root player plus top-10 teammates; edge thickness scales with how often that pair showed up on the same team in the fetched sample.',
+      nodes: networkNodes,
+      edges: networkEdges,
+      maxEdgeGames
+    },
     read: quickRead,
     matches: recentMatches.map((match) => ({
       ...match,
@@ -672,207 +988,101 @@ async function fetchLeague(key) {
   };
 }
 
-function championSlug(id) {
-  return id.replace(/^TFT\d+_/, '').replace(/^TFTSet\d+_/, '');
-}
-
-function readableChampion(id) {
-  const slug = championSlug(id);
-  return slug
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
-    .replace(/([0-9]+)/g, ' $1 ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function deriveTftComp(units) {
-  const sorted = [...units]
-    .sort((a, b) => (b.rarity || 0) - (a.rarity || 0) || (b.tier || 0) - (a.tier || 0) || a.id.localeCompare(b.id))
-    .slice(0, 4)
-    .map((unit) => readableChampion(unit.id));
-  return sorted.join(' / ');
-}
-
-function deriveTftArchetypes(matches) {
-  const comboCounter = new Map();
-
-  for (const match of matches) {
-    const names = [...new Set((match.info.units || [])
-      .filter((unit) => (unit.rarity || 0) >= 4)
-      .map((unit) => readableChampion(unit.id)))].sort();
-
-    for (let i = 0; i < names.length; i += 1) {
-      for (let j = i + 1; j < names.length; j += 1) {
-        for (let k = j + 1; k < names.length; k += 1) {
-          const key = [names[i], names[j], names[k]].join(' / ');
-          comboCounter.set(key, (comboCounter.get(key) || 0) + 1);
-        }
-      }
-    }
-  }
-
-  return topEntries(comboCounter, 4);
-}
-
-function derivePlaystyle(matches) {
-  const avgLevel = avg(matches.map((match) => match.info.level || 0));
-  const avgLastRound = avg(matches.map((match) => match.info.lastRound || 0));
-  const avgDamage = avg(matches.map((match) => match.info.totalDamageToPlayers || 0));
-  const avgFlex = avg(matches.map((match) => match.ratings?.econ2 || 0));
-  const avgExecution = avg(matches.map((match) => match.ratings?.meta2 || 0));
-
-  const parts = [];
-  if (avgLevel >= 8.5) parts.push('usually caps boards pretty high');
-  if (avgLastRound >= 33) parts.push('tends to survive deep into lobbies');
-  if (avgDamage >= 80) parts.push('converts strong boards into real player damage');
-  if (avgFlex >= 0.5) parts.push('leans flexible on econ and pivots');
-  if (avgExecution >= 0.5) parts.push('board quality looks deliberate rather than random-highroll');
-
-  if (!parts.length) return 'mostly a results-first double up profile, with limited public telemetry beyond placements and boards.';
-  return `${parts[0].charAt(0).toUpperCase()}${parts[0].slice(1)}, and ${parts.slice(1).join(', ')}.`;
-}
-
-async function fetchTft() {
-  const response = await fetch(TACTICS_TOOLS_URL, {
-    headers: { 'User-Agent': 'Mozilla/5.0 OpenClaw/1.0' }
-  });
-
-  if (!response.ok) {
-    throw new Error(`Tactics.tools ${response.status}: ${await response.text()}`);
-  }
-
-  const html = await response.text();
-  const nextDataMatch = html.match(/<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/);
-  if (!nextDataMatch) {
-    throw new Error('Could not locate __NEXT_DATA__ in tactics.tools response');
-  }
-
-  const page = JSON.parse(nextDataMatch[1]).props.pageProps;
-  const matches = page.initialData.matches || [];
-  const considered = matches.slice(0, TFT_TARGET_COUNT);
-  const unitCounter = new Map();
-  const queueCounter = new Map();
-
-  for (const match of considered) {
-    queueCounter.set(queueName(match.queueId), (queueCounter.get(queueName(match.queueId)) || 0) + 1);
-
-    for (const unit of match.info.units || []) {
-      const name = readableChampion(unit.id);
-      unitCounter.set(name, (unitCounter.get(name) || 0) + 1);
-    }
-  }
-
-  const avgPlacement = page.initialData.seasonStats?.avgPlace ?? avg(considered.map((match) => match.info.placement || 0));
-  const top4Rate = (page.initialData.seasonStats?.top4 || 0) / Math.max(1, considered.length);
-  const winRate = (page.initialData.seasonStats?.win || 0) / Math.max(1, considered.length);
-
-  return {
-    source: 'tactics.tools public profile page',
-    requestedSampleSize: TFT_TARGET_COUNT,
-    availableSampleSize: considered.length,
-    avgPlacement,
-    top4Rate,
-    winRate,
-    mostFrequentQueue: topEntries(queueCounter, 1)[0] || null,
-    topChampions: topEntries(unitCounter, 6),
-    topComps: deriveTftArchetypes(considered),
-    playstyleRead: derivePlaystyle(considered),
-    queueSeasonStats: page.initialData.queueSeasonStats,
-    seasonStats: page.initialData.seasonStats,
-    matches: considered.map((match) => ({
-      id: match.id,
-      dateTime: match.dateTime,
-      queueId: match.queueId,
-      queueName: queueName(match.queueId),
-      placement: match.info.placement,
-      level: match.info.level,
-      lastRound: match.info.lastRound,
-      totalDamageToPlayers: match.info.totalDamageToPlayers,
-      lpDiff: match.lpDiff,
-      rankBefore: match.rankBefore,
-      rankAfter: match.rankAfter,
-      comp: deriveTftComp(match.info.units || []),
-      units: (match.info.units || []).map((unit) => ({
-        name: readableChampion(unit.id),
-        starLevel: unit.tier,
-        rarity: unit.rarity,
-        items: unit.items2 || []
-      })),
-      ratings: match.ratings || null
-    }))
-  };
-}
-
 async function main() {
-  await fs.mkdir(DATA_DIR, { recursive: true });
-  await fs.mkdir(OUT_DIR, { recursive: true });
+  await ensureDir(DATA_DIR);
+  await ensureDir(OUT_DIR);
+  await ensureDir(CACHE_DIR);
 
   const riotKey = (await fs.readFile(RIOT_KEY_PATH, 'utf8')).trim();
-  const [league, tft] = await Promise.all([fetchLeague(riotKey), fetchTft()]);
+  const championData = buildChampionLookup(await fetchChampionData());
+
+  const rootBundles = [];
+  for (const riotId of ROOT_PLAYERS) {
+    rootBundles.push({ riotId, ...(await fetchPlayerBundle(riotId, HISTORY_TARGET_ROOT, riotKey)) });
+  }
+
+  const rootTopDynamic = new Set(ROOT_PLAYERS.map(canonicalRiotId));
+  const rootTopRows = [];
+  for (const bundle of rootBundles) {
+    const provisionalAllowed = Object.fromEntries(ROOT_PLAYERS.map((riotId) => [canonicalRiotId(riotId), { key: canonicalRiotId(riotId), riotId }]));
+    const summary = summarizePlayer({ ...bundle, championLookup: championData, allowedPlayerMap: provisionalAllowed });
+    const top5 = summary.topTeammates.slice(0, DYNAMIC_TOP).map((entry) => entry.name);
+    rootTopRows.push({ riotId: bundle.riotId, top5 });
+    for (const teammate of top5) rootTopDynamic.add(canonicalRiotId(teammate));
+  }
+
+  const dynamicIds = new Map();
+  for (const riotId of ROOT_PLAYERS) dynamicIds.set(canonicalRiotId(riotId), riotId);
+  for (const row of rootTopRows) {
+    for (const teammate of row.top5) dynamicIds.set(canonicalRiotId(teammate), teammate);
+  }
+
+  const allowedPlayerMap = Object.fromEntries([...dynamicIds.entries()].map(([key, riotId]) => [key, { key, riotId }]));
+  const allBundles = [...rootBundles];
+  for (const [key, riotId] of dynamicIds.entries()) {
+    if (ROOT_PLAYERS.map(canonicalRiotId).includes(key)) continue;
+    allBundles.push({ riotId, ...(await fetchPlayerBundle(riotId, HISTORY_TARGET_ALLOWED, riotKey)) });
+  }
+
+  const players = {};
+  for (const bundle of allBundles) {
+    const summary = summarizePlayer({ ...bundle, championLookup: championData, allowedPlayerMap });
+    players[summary.profile.canonicalKey] = summary;
+  }
 
   const payload = {
     generatedAt: new Date().toISOString(),
-    profile: {
-      displayName: 'chuahpstix',
-      tagline: 'NA1'
+    version: DATA_VERSION,
+    defaultPlayerKey: canonicalRiotId(ROOT_PLAYERS[0]),
+    rootPlayers: ROOT_PLAYERS,
+    dynamicTargets: [...dynamicIds.values()],
+    dynamicRules: {
+      roots: ROOT_PLAYERS,
+      derivedFromRootTopN: DYNAMIC_TOP,
+      explanation: 'Allowed click-through targets are intentionally capped to the union of the two root players plus each root player’s top-5 most-played teammates from the fetched Riot sample.'
     },
-    league,
-    tft
+    players
   };
 
   const summary = {
     generatedAt: payload.generatedAt,
-    league: {
-      deepSampleSize: league.deepSampleSize,
-      recentRecord: league.recent.record,
-      recentWinRate: league.recent.winRateText,
-      overallRecord: league.overall.record,
-      overallWinRate: league.overall.winRateText,
-      historyWindow: league.historyWindow,
-      topChampions: league.topChampions,
-      topTeammates: league.topTeammates.slice(0, 5),
-      signaturePlay: league.signaturePlay.signals,
-      worstEnemy: league.worstEnemy.rows.slice(0, 3)
-    },
-    tft: {
-      requestedSampleSize: tft.requestedSampleSize,
-      availableSampleSize: tft.availableSampleSize,
-      avgPlacement: Number(tft.avgPlacement.toFixed(2)),
-      top4Rate: fmtPct(tft.top4Rate),
-      winRate: fmtPct(tft.winRate),
-      mostFrequentQueue: tft.mostFrequentQueue,
-      topChampions: tft.topChampions,
-      topComps: tft.topComps,
-      playstyleRead: tft.playstyleRead
-    }
+    version: payload.version,
+    dynamicTargets: payload.dynamicTargets,
+    playerSummaries: Object.values(players).map((player) => ({
+      riotId: player.profile.riotId,
+      deepSampleSize: player.deepSampleSize,
+      overallRecord: player.overall.record,
+      overallWinRate: player.overall.winRateText,
+      topChampion: player.topChampions[0] || null,
+      topTeammate: player.topTeammates[0] || null,
+      comfortClass: player.championIdentity.comfortLeader,
+      successClass: player.championIdentity.successLeader
+    }))
   };
+
+  const lines = [
+    '# Chuah dashboard v2 data refresh',
+    '',
+    `Generated: ${payload.generatedAt}`,
+    `Allowed click-through targets (${payload.dynamicTargets.length}): ${payload.dynamicTargets.join(', ')}`,
+    '',
+    '## Player snapshots',
+    ...Object.values(players).flatMap((player) => [
+      `### ${player.profile.riotId}`,
+      `- Riot-visible history window fetched: ${player.deepSampleSize} matches`,
+      `- Window: ${player.historyWindow.firstMatchAtText} → ${player.historyWindow.lastMatchAtText}`,
+      `- Overall record: ${player.overall.record} (${player.overall.winRateText})`,
+      `- Top teammate: ${player.topTeammates[0] ? `${player.topTeammates[0].name} (${player.topTeammates[0].games} games)` : 'n/a'}`,
+      `- Comfort class: ${player.championIdentity.comfortLeader || 'n/a'}`,
+      `- Success class: ${player.championIdentity.successLeader || 'n/a'}`,
+      `- Premade read: ${player.premadeSynergy.read}`,
+      ''
+    ])
+  ];
 
   await fs.writeFile(path.join(DATA_DIR, 'chuah-data.json'), JSON.stringify(payload, null, 2));
   await fs.writeFile(path.join(OUT_DIR, 'chuah-summary.json'), JSON.stringify(summary, null, 2));
-  await fs.writeFile(path.join(OUT_DIR, 'chuah-summary.md'), [
-    '# Chuah app data refresh',
-    '',
-    `Generated: ${payload.generatedAt}`,
-    '',
-    '## League deep sample',
-    `- Riot-visible history window fetched: ${league.deepSampleSize} matches`,
-    `- Window: ${league.historyWindow.firstMatchAtText} → ${league.historyWindow.lastMatchAtText}`,
-    `- Overall record: ${league.overall.record} (${league.overall.winRateText})`,
-    `- Recent 10: ${league.recent.record} (${league.recent.winRateText})`,
-    `- Signature play callouts: ${league.signaturePlay.signals.map((signal) => `${signal.label} (${signal.avgPercentileText})`).join('; ') || 'none strong enough yet'}`,
-    `- Worst enemy read: ${league.worstEnemy.rows[0] ? `${league.worstEnemy.rows[0].champion} (${league.worstEnemy.rows[0].lossRateText} loss rate over ${league.worstEnemy.rows[0].games} games)` : 'n/a'}`,
-    '',
-    '## TFT public sample',
-    `- Requested: ${summary.tft.requestedSampleSize}`,
-    `- Available from source: ${summary.tft.availableSampleSize}`,
-    `- Avg placement: ${summary.tft.avgPlacement}`,
-    `- Top 4 rate: ${summary.tft.top4Rate}`,
-    `- Win rate: ${summary.tft.winRate}`,
-    `- Queue: ${summary.tft.mostFrequentQueue ? `${summary.tft.mostFrequentQueue.name} (${summary.tft.mostFrequentQueue.count})` : 'n/a'}`,
-    `- Read: ${summary.tft.playstyleRead}`,
-    ''
-  ].join('\n'));
+  await fs.writeFile(path.join(OUT_DIR, 'chuah-summary.md'), lines.join('\n'));
 
   console.log(JSON.stringify(summary, null, 2));
 }

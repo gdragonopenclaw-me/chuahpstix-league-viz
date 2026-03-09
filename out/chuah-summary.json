@@ -1,229 +1,216 @@
 {
-  "generatedAt": "2026-03-09T01:18:25.284Z",
-  "league": {
-    "deepSampleSize": 256,
-    "recentRecord": "4-6",
-    "recentWinRate": "40.0%",
-    "overallRecord": "134-122",
-    "overallWinRate": "52.3%",
-    "historyWindow": {
-      "firstMatchAt": 1710902797783,
-      "lastMatchAt": 1772082849187,
-      "firstMatchAtText": "Mar 19, 2024, 10:46 PM",
-      "lastMatchAtText": "Feb 26, 2026, 12:14 AM"
-    },
-    "topChampions": [
-      {
+  "generatedAt": "2026-03-09T01:46:25.186Z",
+  "version": 2,
+  "dynamicTargets": [
+    "chuahpstix#NA1",
+    "lintaho#NA1",
+    "xyzipper#NA1",
+    "Swolleo#NA1",
+    "hamturkeygravy#1234",
+    "pbandjiffy1#NA1",
+    "podsie#NA1",
+    "belugabuddy#NA1"
+  ],
+  "playerSummaries": [
+    {
+      "riotId": "chuahpstix#NA1",
+      "deepSampleSize": 220,
+      "overallRecord": "113-107",
+      "overallWinRate": "51.4%",
+      "topChampion": {
         "name": "Tryndamere",
-        "count": 27
+        "count": 22
       },
-      {
-        "name": "Jayce",
-        "count": 14
+      "topTeammate": {
+        "name": "xyzipper#NA1",
+        "games": 166,
+        "wins": 89,
+        "losses": 77,
+        "record": "89-77",
+        "winRate": 0.536144578313253,
+        "winRateText": "54%",
+        "canonical": "xyzipper#na1",
+        "switchable": true,
+        "switchTargetKey": "xyzipper#na1",
+        "switchTargetLabel": "xyzipper#NA1"
       },
-      {
-        "name": "Fizz",
-        "count": 12
+      "comfortClass": "Fighter / Assassin",
+      "successClass": "Assassin / Fighter"
+    },
+    {
+      "riotId": "lintaho#NA1",
+      "deepSampleSize": 220,
+      "overallRecord": "102-118",
+      "overallWinRate": "46.4%",
+      "topChampion": {
+        "name": "Morgana",
+        "count": 64
       },
-      {
-        "name": "Warwick",
-        "count": 11
+      "topTeammate": {
+        "name": "podsie#NA1",
+        "games": 48,
+        "wins": 19,
+        "losses": 29,
+        "record": "19-29",
+        "winRate": 0.3958333333333333,
+        "winRateText": "40%",
+        "canonical": "podsie#na1",
+        "switchable": true,
+        "switchTargetKey": "podsie#na1",
+        "switchTargetLabel": "podsie#NA1"
       },
-      {
-        "name": "Irelia",
+      "comfortClass": "Support / Tank",
+      "successClass": "Support / Tank"
+    },
+    {
+      "riotId": "xyzipper#NA1",
+      "deepSampleSize": 140,
+      "overallRecord": "75-65",
+      "overallWinRate": "53.6%",
+      "topChampion": {
+        "name": "Heimerdinger",
+        "count": 10
+      },
+      "topTeammate": {
+        "name": "chuahpstix#NA1",
+        "games": 136,
+        "wins": 73,
+        "losses": 63,
+        "record": "73-63",
+        "winRate": 0.5367647058823529,
+        "winRateText": "54%",
+        "canonical": "chuahpstix#na1",
+        "switchable": true,
+        "switchTargetKey": "chuahpstix#na1",
+        "switchTargetLabel": "chuahpstix#NA1"
+      },
+      "comfortClass": "Mage / Support",
+      "successClass": "Tank / Frontline"
+    },
+    {
+      "riotId": "Swolleo#NA1",
+      "deepSampleSize": 140,
+      "overallRecord": "73-67",
+      "overallWinRate": "52.1%",
+      "topChampion": {
+        "name": "Chogath",
+        "count": 49
+      },
+      "topTeammate": {
+        "name": "hamturkeygravy#1234",
+        "games": 64,
+        "wins": 36,
+        "losses": 28,
+        "record": "36-28",
+        "winRate": 0.5625,
+        "winRateText": "56%",
+        "canonical": "hamturkeygravy#1234",
+        "switchable": true,
+        "switchTargetKey": "hamturkeygravy#1234",
+        "switchTargetLabel": "hamturkeygravy#1234"
+      },
+      "comfortClass": "Unknown / Generalist",
+      "successClass": "Fighter / Tank"
+    },
+    {
+      "riotId": "hamturkeygravy#1234",
+      "deepSampleSize": 140,
+      "overallRecord": "62-78",
+      "overallWinRate": "44.3%",
+      "topChampion": {
+        "name": "Jhin",
+        "count": 41
+      },
+      "topTeammate": {
+        "name": "Swolleo#NA1",
+        "games": 64,
+        "wins": 36,
+        "losses": 28,
+        "record": "36-28",
+        "winRate": 0.5625,
+        "winRateText": "56%",
+        "canonical": "swolleo#na1",
+        "switchable": true,
+        "switchTargetKey": "swolleo#na1",
+        "switchTargetLabel": "Swolleo#NA1"
+      },
+      "comfortClass": "Marksman / Mage",
+      "successClass": "Marksman / Assassin"
+    },
+    {
+      "riotId": "pbandjiffy1#NA1",
+      "deepSampleSize": 52,
+      "overallRecord": "26-26",
+      "overallWinRate": "50.0%",
+      "topChampion": {
+        "name": "Leblanc",
         "count": 9
       },
-      {
-        "name": "Ekko",
-        "count": 8
-      },
-      {
-        "name": "Evelynn",
-        "count": 8
-      },
-      {
-        "name": "Vex",
-        "count": 8
-      }
-    ],
-    "topTeammates": [
-      {
-        "name": "xyzipper#NA1",
-        "games": 196,
-        "wins": 107,
-        "losses": 89,
-        "record": "107-89",
-        "winRate": 0.5459183673469388,
-        "winRateText": "55%"
-      },
-      {
-        "name": "Swolleo#NA1",
-        "games": 54,
-        "wins": 25,
-        "losses": 29,
-        "record": "25-29",
-        "winRate": 0.46296296296296297,
-        "winRateText": "46%"
-      },
-      {
-        "name": "lintaho#NA1",
-        "games": 38,
-        "wins": 19,
-        "losses": 19,
-        "record": "19-19",
-        "winRate": 0.5,
-        "winRateText": "50%"
-      },
-      {
-        "name": "hamturkeygravy#1234",
-        "games": 24,
-        "wins": 11,
-        "losses": 13,
-        "record": "11-13",
-        "winRate": 0.4583333333333333,
-        "winRateText": "46%"
-      },
-      {
-        "name": "im lagging hello#1234",
+      "topTeammate": {
+        "name": "chuahpstix#NA1",
         "games": 15,
         "wins": 7,
         "losses": 8,
         "record": "7-8",
         "winRate": 0.4666666666666667,
-        "winRateText": "47%"
-      }
-    ],
-    "signaturePlay": [
-      {
-        "key": "teamDamage",
-        "label": "damage share gravity",
-        "description": "soaks up a bigger slice of team damage responsibility than typical participants in the same matches.",
-        "sampleSize": 256,
-        "avgPercentile": 0.5525173611111114,
-        "avgPercentileText": "55.3%",
-        "avgValue": 0.21109591693924395,
-        "avgValueText": "21.1% team damage share",
-        "supportingGames": 80
+        "winRateText": "47%",
+        "canonical": "chuahpstix#na1",
+        "switchable": true,
+        "switchTargetKey": "chuahpstix#na1",
+        "switchTargetLabel": "chuahpstix#NA1"
       },
-      {
-        "key": "dpm",
-        "label": "damage throughput",
-        "description": "converts game time into champion damage better than the match median.",
-        "sampleSize": 256,
-        "avgPercentile": 0.5416666666666669,
-        "avgPercentileText": "54.2%",
-        "avgValue": 1431.235003850899,
-        "avgValueText": "1431 damage/min",
-        "supportingGames": 77
-      },
-      {
-        "key": "steals",
-        "label": "objective theft pressure",
-        "description": "has actual steal events in the fetched sample, so the page can call it out without guessing.",
-        "sampleSize": 256,
-        "avgPercentile": 0.5,
-        "avgPercentileText": "n/a",
-        "avgValue": 6,
-        "avgValueText": "6 total steals",
-        "supportingGames": 3
-      }
-    ],
-    "worstEnemy": [
-      {
-        "champion": "Jayce",
-        "games": 6,
-        "losses": 4,
-        "wins": 2,
-        "lossRate": 0.6666666666666666,
-        "lossRateText": "66.7%",
-        "avgDeaths": 8,
-        "avgKda": 4.04,
-        "avgDamage": 26552,
-        "caution": "enough repeat exposure to be worth noticing",
-        "score": 0.7266666666666666
-      },
-      {
-        "champion": "Viktor",
-        "games": 4,
-        "losses": 3,
-        "wins": 1,
-        "lossRate": 0.75,
-        "lossRateText": "75.0%",
-        "avgDeaths": 12.8,
-        "avgKda": 2.96,
-        "avgDamage": 36590,
-        "caution": "small sample, treat lightly",
-        "score": 0.595625
-      },
-      {
-        "champion": "AurelionSol",
-        "games": 5,
-        "losses": 3,
-        "wins": 2,
-        "lossRate": 0.6,
-        "lossRateText": "60.0%",
-        "avgDeaths": 11,
-        "avgKda": 2.78,
-        "avgDamage": 34577,
-        "caution": "enough repeat exposure to be worth noticing",
-        "score": 0.5825
-      }
-    ]
-  },
-  "tft": {
-    "requestedSampleSize": 30,
-    "availableSampleSize": 18,
-    "avgPlacement": 3.5,
-    "top4Rate": "72.2%",
-    "winRate": "50.0%",
-    "mostFrequentQueue": {
-      "name": "Double Up",
-      "count": 18
+      "comfortClass": "Fighter / Assassin",
+      "successClass": "Marksman / Carry"
     },
-    "topChampions": [
-      {
-        "name": "Fiddlesticks",
-        "count": 9
+    {
+      "riotId": "podsie#NA1",
+      "deepSampleSize": 140,
+      "overallRecord": "60-80",
+      "overallWinRate": "42.9%",
+      "topChampion": {
+        "name": "FiddleSticks",
+        "count": 43
       },
-      {
-        "name": "Swain",
-        "count": 9
+      "topTeammate": {
+        "name": "belugabuddy#NA1",
+        "games": 118,
+        "wins": 49,
+        "losses": 69,
+        "record": "49-69",
+        "winRate": 0.4152542372881356,
+        "winRateText": "42%",
+        "canonical": "belugabuddy#na1",
+        "switchable": true,
+        "switchTargetKey": "belugabuddy#na1",
+        "switchTargetLabel": "belugabuddy#NA1"
       },
-      {
-        "name": "Azir",
-        "count": 8
+      "comfortClass": "Unknown / Generalist",
+      "successClass": "Fighter / Mage"
+    },
+    {
+      "riotId": "belugabuddy#NA1",
+      "deepSampleSize": 122,
+      "overallRecord": "51-71",
+      "overallWinRate": "41.8%",
+      "topChampion": {
+        "name": "Jinx",
+        "count": 53
       },
-      {
-        "name": "Shyvana",
-        "count": 7
+      "topTeammate": {
+        "name": "podsie#NA1",
+        "games": 118,
+        "wins": 49,
+        "losses": 69,
+        "record": "49-69",
+        "winRate": 0.4152542372881356,
+        "winRateText": "42%",
+        "canonical": "podsie#na1",
+        "switchable": true,
+        "switchTargetKey": "podsie#na1",
+        "switchTargetLabel": "podsie#NA1"
       },
-      {
-        "name": "Ashe",
-        "count": 6
-      },
-      {
-        "name": "Kindred",
-        "count": 6
-      }
-    ],
-    "topComps": [
-      {
-        "name": "Azir / Fiddlesticks / Kindred",
-        "count": 3
-      },
-      {
-        "name": "Azir / Fiddlesticks / Shyvana",
-        "count": 3
-      },
-      {
-        "name": "Azir / Fiddlesticks / Swain",
-        "count": 3
-      },
-      {
-        "name": "Azir / Shyvana / Swain",
-        "count": 3
-      }
-    ],
-    "playstyleRead": "Usually caps boards pretty high, and tends to survive deep into lobbies."
-  }
+      "comfortClass": "Marksman / Carry",
+      "successClass": "Marksman / Carry"
+    }
+  ]
 }

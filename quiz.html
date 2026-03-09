@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>how well do you know chuahpstix?</title>
+  <title>how well do you know this player?</title>
   <style>
     :root {
       --bg: #07101d;
@@ -263,12 +263,12 @@
     <div class="hero">
       <div>
         <div class="badge">friend test mode • data-fed multiple choice quiz</div>
-        <h1>how well do you know chuahpstix?</h1>
-        <p class="sub">a little scouting report, a little loyalty test. this quiz pulls from the same Riot-backed dashboard data and turns it into a playful read on champs, habits, teammates, weird records, and late-night queue behavior.</p>
+        <h1 id="quiz-title">how well do you know this player?</h1>
+        <p class="sub" id="quiz-sub">a little scouting report, a little loyalty test. this quiz pulls from the same Riot-backed dashboard data and turns it into a playful read on champs, habits, teammates, weird records, and late-night queue behavior.</p>
         <div class="actions">
           <button id="start-button">start quiz</button>
           <button class="secondary hidden" id="restart-button">reroll questions</button>
-          <a class="button secondary" href="./index.html">back to dashboard</a>
+          <a class="button secondary" id="back-link" href="./index.html">back to dashboard</a>
         </div>
       </div>
       <div class="meta-line" id="updated-at">loading latest snapshot…</div>
@@ -372,6 +372,7 @@
 
     function buildQuestionBank(data) {
       const league = data.league;
+      const playerName = data.profile?.displayName || 'this player';
       const topChampions = league.topChampions || [];
       const teammateRows = league.topTeammates || [];
       const records = league.records?.rows || [];
@@ -397,7 +398,7 @@
       if (topChampions[0]) {
         pushQuestion(bank, {
           category: 'champ identity',
-          prompt: 'which champion shows up the most in chuah’s deep sample?',
+          prompt: `which champion shows up the most in ${playerName}’s deep sample?`,
           correctAnswer: topChampions[0].name,
           options: [topChampions[0].name, ...takeDistractors(allPoolChamps, topChampions[0].name)],
           explain: `${topChampions[0].name} leads the sample at ${topChampions[0].count} games. that’s the clearest “yeah ok this is part of the identity” answer.`
@@ -440,7 +441,7 @@
       if (teammateRows[0]) {
         pushQuestion(bank, {
           category: 'teammates',
-          prompt: 'who is chuah’s most-played duo by a mile?',
+          prompt: `who is ${playerName}’s most-played duo by a mile?`,
           correctAnswer: teammateRows[0].name,
           options: [teammateRows[0].name, ...takeDistractors(teammateNames, teammateRows[0].name)],
           explain: `${teammateRows[0].name} shows up in ${teammateRows[0].games} games with a ${teammateRows[0].record} record together.`
@@ -451,7 +452,7 @@
       if (bestTeammate) {
         pushQuestion(bank, {
           category: 'teammates',
-          prompt: 'among the listed repeat teammates, who has the best win rate with chuah?',
+          prompt: `among the listed repeat teammates, who has the best win rate with ${playerName}?`,
           correctAnswer: bestTeammate.name,
           options: [bestTeammate.name, ...takeDistractors(teammateNames, bestTeammate.name)],
           explain: `${bestTeammate.name} edges the board with ${bestTeammate.winRateText} across ${bestTeammate.games} games together.`
@@ -485,7 +486,7 @@
       if (bestBand) {
         pushQuestion(bank, {
           category: 'playtime personality',
-          prompt: 'when does the data say chuah performs best?',
+          prompt: `when does the data say ${playerName} performs best?`,
           correctAnswer: bestBand,
           options: [bestBand, ...takeDistractors(playtimeBands.map((row) => row.label), bestBand)],
           explain: `${bestBand} was the cleanest band in this window. the page literally calls it the best-performing time slot.`
@@ -527,7 +528,7 @@
       if (highestKills) {
         pushQuestion(bank, {
           category: 'records',
-          prompt: 'which champion owns chuah’s highest-kills game in this fetched window?',
+          prompt: `which champion owns ${playerName}’s highest-kills game in this fetched window?`,
           correctAnswer: highestKills.champion,
           options: [highestKills.champion, ...takeDistractors(allPoolChamps, highestKills.champion)],
           explain: `${highestKills.champion} holds the top frag game: ${highestKills.kdaText} for ${highestKills.value} kills.`
@@ -739,13 +740,29 @@
       });
     }
 
+    function canonical(value) {
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function selectPlayer(bundle) {
+      const params = new URLSearchParams(window.location.search);
+      const raw = canonical(params.get('player') || bundle.defaultPlayerKey);
+      const key = bundle.players[raw] ? raw : bundle.defaultPlayerKey;
+      return { key, league: bundle.players[key], profile: bundle.players[key].profile };
+    }
+
     async function boot() {
       const response = await fetch('./data/chuah-data.json', { cache: 'no-store' });
-      const data = await response.json();
+      const bundle = await response.json();
+      const selected = selectPlayer(bundle);
+      const data = { generatedAt: bundle.generatedAt, profile: selected.profile, league: selected.league };
       quizState.data = data;
       const questionCount = Math.min(10, buildQuestionBank(data).length);
       renderIntro(data, questionCount);
-      byId('updated-at').textContent = `refreshed ${new Date(data.generatedAt).toLocaleString()}`;
+      byId('updated-at').textContent = `refreshed ${new Date(bundle.generatedAt).toLocaleString()}`;
+      byId('quiz-title').textContent = `how well do you know ${selected.profile.riotId}?`;
+      byId('back-link').href = `./index.html?player=${selected.key}`;
+      document.title = `how well do you know ${selected.profile.riotId}?`;
       attachEvents();
     }
 
